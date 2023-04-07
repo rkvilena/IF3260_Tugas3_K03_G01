@@ -1,0 +1,74 @@
+* {
+  /* Bright colours for the text */
+  color: #000000;
+  font-family: "", sans-serif;
+}
+
+input {
+  /* Dark text on light background */
+  color: #000;
+}
+
+body {
+  /* dark background so that the text is readable */
+  display: flex;
+  background-color: #ffd8d8;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  padding: 20px;
+  gap: 10px;
+}
+
+div {
+  padding: 0 auto;
+}
+
+canvas {
+  min-height: 100%;
+  max-height: 100%;
+  aspect-ratio: 1 / 1;
+  writing-mode: vertical-lr;
+  display: block;
+  left: 0;
+  background: #000000;
+  color: #ffffff;
+}
+
+#help {
+  position: absolute;
+  bottom: 2em;
+  right: 2em;
+}
+
+#help:hover {
+  filter: invert(50%);
+}
+
+#helpMenu {
+  visibility: hidden;
+  opacity: 0.0;
+  position: absolute;
+  top: 2em;
+  right: 2em;
+  max-height: 80vh;
+  height: 64em;
+  width: 32em;
+  padding: 0 1em;
+  background-color: gainsboro;
+  box-shadow: 1em 1em gray;
+  border-radius: 1em;
+  transition: visibility 1s, opacity 0.5s;
+}
+
+#helpMenu:hover {
+  visibility: visible;
+  opacity: 1.0;
+}
+
+#help:hover + #helpMenu {
+  visibility: visible;
+  opacity: 1.0;
+}
