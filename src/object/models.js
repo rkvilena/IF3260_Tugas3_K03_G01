@@ -831,7 +831,6 @@ export const dodecahedron = {
     get positions() {
         const cent = this.centroid;
         var positions = [];
-        console.log(this.indices.length);
         for (var i = 0; i < this.indices.length; i++) {
             positions.push(this.vertices[this.indices[i] * 3] - cent[0]);
             positions.push(this.vertices[this.indices[i] * 3 + 1] - cent[0]);
