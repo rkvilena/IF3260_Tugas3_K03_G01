@@ -14,6 +14,16 @@ export function matrixMultiplication(matrix1, matrix2) {
   return result;
 }
 
+export function identityMatrix() {
+  const identity = [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ]
+  return identity.flat()
+}
+
 export const translationMatrix = (x,y,z) => {
   return [
     [1, 0, 0, 0],

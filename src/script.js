@@ -9,16 +9,16 @@ import {
     orthographicMatrix,
     lookAtMatrix,
     rotationMatrices,
-    normalize
 } from "./math.js";
 import { cube, dodecahedron, pyramid } from "./object/models.js";
-import { example } from "./object/articulated.js";
+import { hierarchy1, hierarchy2 } from "./object/articulated.js";
 import { save } from "./save.js";
+import { Node } from "./node.js"
 
 ("use strict");
 
 // Hardcoded values----------------------------------------------
-let renderedmodel = example;
+let renderedmodel = hierarchy1;
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];
@@ -28,12 +28,25 @@ let height = 0.0;
 let radius = 1.0;
 let camRotation = 0;
 let shading = false;
-let animrotation = 1;
-let liverotation = 1;
 let animFrameId;
+let nodes = [];
+createTree(renderedmodel)
 
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas");
+
+function createTree(hierarchy, parent){
+    let node = new Node(hierarchy.source)
+    if (parent){
+        node.setParent(parent)
+    }
+    nodes.push(node)
+    if (hierarchy.children != undefined){
+        for (const childhierarchy of hierarchy.children) {
+            createTree(childhierarchy, node)
+        }
+    }
+}
 
 function main() {
     // Get Canvas Context
@@ -107,8 +120,6 @@ function main() {
                 if (event.target.checked) {
                     window.requestAnimationFrame(animrender);
                 } else {
-                    animrotation = 1
-                    liverotation = 1
                     window.cancelAnimationFrame(animFrameId);
                     window.requestAnimationFrame(render);
                 }
@@ -163,19 +174,25 @@ function main() {
         document
             .getElementById("type-cube")
             .addEventListener("click", function (event) {
-                renderedmodel = example;
+                renderedmodel = hierarchy1;
+                nodes = [];
+                createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
         document
             .getElementById("type-pyramid")
             .addEventListener("click", function (event) {
-                renderedmodel = pyramid;
+                renderedmodel = hierarchy2;
+                nodes = [];
+                createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
         document
             .getElementById("type-dodec")
             .addEventListener("click", function (event) {
                 renderedmodel = dodecahedron;
+                nodes = [];
+                createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
     }
@@ -302,7 +319,6 @@ function main() {
             height = 0.0;
             radius = 1.0;
             camRotation = 0;
-            animrotation = 0;
             shading = false;
             window.requestAnimationFrame(render);
         });
@@ -453,14 +469,14 @@ function main() {
     }
 
     // Draw hierarchical object
-    function drawObjects(model) {
+    function drawObjects(node) {
         if (document.getElementById("animation").checked){
-            drawObjectAnim(model.source)
+            drawObjectAnim(node)
         } else {
-            drawObject(model.source)
+            drawObject(node)
         }
-        if (model.children != undefined) {
-            for (const child of model.children) {
+        if (node.children != undefined) {
+            for (const child of node.children) {
                 drawObjects(child) // recursion call
             }
         }
@@ -489,9 +505,9 @@ function main() {
     }
 
     // Draw component buffer (current object)
-    function drawObject(model) {
-        const positions = model.positions;
-        const colorarray = model.colorarray;
+    function drawObject(node) {
+        const positions = node.source.positions;
+        const colorarray = node.source.colorarray;
         setupDraw(positions, colorarray)
 
         // Compute Matrix
@@ -501,37 +517,25 @@ function main() {
             false,
             new Float32Array(finalMatrix)
         );
-        gl.drawArrays(gl.TRIANGLES, 0, model.indices.length);
+        gl.drawArrays(gl.TRIANGLES, 0, node.source.indices.length);
     }
 
     // Draw animated component buffer (current object)
-    function drawObjectAnim(model) {
-        const positions = model.positions;
-        const colorarray = model.colorarray;
+    function drawObjectAnim(node) {
+        const positions = node.source.positions;
+        const colorarray = node.source.colorarray;
         setupDraw(positions, colorarray)
 
         // Compute Matrix
         let finalMatrix = transformMatrix();
-        // Apply rotate animation
-        liverotation = rotation[1] += (animrotation /2 )
-        if (liverotation >= 360) {
-            liverotation = 1
-            animrotation = 1
-        }
-
-        let animrotateMatVal = rotationMatrices(
-            rotation[0],
-            liverotation / 1000 * Math.PI,
-            rotation[2]
-        );
-        finalMatrix = matrixMultiplication(animrotateMatVal[1], finalMatrix);
+        finalMatrix =  matrixMultiplication(finalMatrix, node.worldMatrix)
         gl.uniformMatrix4fv(
             transformLocation,
             false,
             new Float32Array(finalMatrix)
         );
 
-        gl.drawArrays(gl.TRIANGLES, 0, model.indices.length);
+        gl.drawArrays(gl.TRIANGLES, 0, node.source.indices.length);
     }
 
     // Rendering
@@ -553,7 +557,19 @@ function main() {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
         gl.useProgram(program);
-        drawObjects(renderedmodel)
+
+        // EXAMPLE - Component rotation
+        // let animrotateMatVal = rotationMatrices(
+        //     0,
+        //     360 / 1000 * Math.PI,
+        //     360 / 1000 * Math.PI,
+        // );
+        // decanode.localMatrix = matrixMultiplication(animrotateMatVal[0], decanode.localMatrix)
+        // cubenode.localMatrix = matrixMultiplication(animrotateMatVal[1], cubenode.localMatrix)
+        // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
+        // decanode.updateWorldMatrix()
+
+        drawObjects(nodes[0])
     }
     function animrender() {
         render()

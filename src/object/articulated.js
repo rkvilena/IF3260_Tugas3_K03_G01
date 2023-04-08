@@ -3,16 +3,16 @@ import { cube, pyramid, dodecahedron } from "./models.js";
 export const threebox = {
     vertices: [
         // Front
-        -0.5, -0.5, -0.5, // 1: left-bottom
-        0.5, -0.5, -0.5, // 2: right-bottom
-        0.5, 0.5, -0.5, // 3: right-top
-        -0.5, 0.5, -0.5, // 4: left-top
+        -0.1, -0.1, -0.1, // 1: left-bottom
+        0.1, -0.1, -0.1, // 2: right-bottom
+        0.1, 0.1, -0.1, // 3: right-top
+        -0.1, 0.1, -0.1, // 4: left-top
 
         // Back
-        -0.5, -0.5, 0.5, // 5: left-bottom
-        0.5, -0.5, 0.5, // 6: right-bottom
-        0.5, 0.5, 0.5, // 7: right-top
-        -0.5, 0.5, 0.5, // 8: left-top
+        -0.1, -0.1, 0.1, // 5: left-bottom
+        0.1, -0.1, 0.1, // 6: right-bottom
+        0.1, 0.1, 0.1, // 7: right-top
+        -0.1, 0.1, 0.1, // 8: left-top
     ],
     indices: [
         1, 2, 3,
@@ -48,7 +48,7 @@ export const threebox = {
         for (var i = 0; i < this.indices.length; i++) {
             colorarray.push(this.colors[Math.floor(i / 6) % 8]);
         }
-        return colorarray.flat();
+        return [0,0,0];
     },
     get centroid() {
         var cent = [0, 0, 0];
@@ -74,7 +74,7 @@ export const threebox = {
     },
 }
 
-export const example = {
+export const hierarchy1 = {
     name: "head",
     source: dodecahedron,
     children: [
@@ -84,6 +84,16 @@ export const example = {
         }, 
         {
             name: "child2",
+            source: pyramid
+        },
+    ]
+}
+export const hierarchy2 = {
+    name: "child1",
+    source: cube,
+    children: [
+        {
+            name: "child1",
             source: pyramid
         },
     ]
