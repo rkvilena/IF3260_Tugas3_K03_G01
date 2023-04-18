@@ -9,11 +9,12 @@ import {
     orthographicMatrix,
     lookAtMatrix,
     rotationMatrices,
+    identityMatrix
 } from "./math.js";
 import { cube, dodecahedron, pyramid } from "./object/models.js";
 import { hierarchy1, hierarchy2 } from "./object/articulated.js";
 import { save } from "./save.js";
-import { Node } from "./node.js"
+import { Tree } from "./tree.js"
 
 ("use strict");
 
@@ -29,24 +30,13 @@ let radius = 1.0;
 let camRotation = 0;
 let shading = false;
 let animFrameId;
-let nodes = [];
-createTree(renderedmodel)
+let tree = new Tree();
+tree.createTree(renderedmodel)
+tree.root = tree.nodes[0]
+console.log(tree)
 
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas");
-
-function createTree(hierarchy, parent){
-    let node = new Node(hierarchy.source)
-    if (parent){
-        node.setParent(parent)
-    }
-    nodes.push(node)
-    if (hierarchy.children != undefined){
-        for (const childhierarchy of hierarchy.children) {
-            createTree(childhierarchy, node)
-        }
-    }
-}
 
 function main() {
     // Get Canvas Context
@@ -175,7 +165,7 @@ function main() {
             .getElementById("type-cube")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy1;
-                nodes = [];
+                tree = [];
                 createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
@@ -183,7 +173,7 @@ function main() {
             .getElementById("type-pyramid")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy2;
-                nodes = [];
+                tree = [];
                 createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
@@ -191,7 +181,7 @@ function main() {
             .getElementById("type-dodec")
             .addEventListener("click", function (event) {
                 renderedmodel = dodecahedron;
-                nodes = [];
+                tree = [];
                 createTree(renderedmodel)
                 window.requestAnimationFrame(render);
             });
@@ -252,6 +242,15 @@ function main() {
                 translation[1] = parseFloat(event.target.value / 200);
                 window.requestAnimationFrame(render);
             });
+        /* CHILD NODE Y TRANSLATION EXAMPLE */
+        document
+            .getElementById("translasiYcube")
+            .addEventListener("input", function (event) {
+                tree.findNode("child1").translation[1] = parseFloat(event.target.value / 200)
+                tree.root.updateWorldMatrix()
+
+                window.requestAnimationFrame(render);
+            });
         document
             .getElementById("translasiZ")
             .addEventListener("input", function (event) {
@@ -278,12 +277,30 @@ function main() {
                 rotation[2] = parseFloat(event.target.value);
                 window.requestAnimationFrame(render);
             });
+        
+        /* CHILD NODE Z ROTATION EXAMPLE */
+        document
+            .getElementById("rotasiZcube")
+            .addEventListener("input", function (event) {
+                tree.findNode("child1").rotation[2] = parseFloat(event.target.value)
+                tree.root.updateWorldMatrix()
+                window.requestAnimationFrame(render);
+            });
 
         //SCALE Slider --------------------------------------------------------
         document
             .getElementById("scalingX")
             .addEventListener("input", function (event) {
                 scale[0] = parseFloat(event.target.value);
+                window.requestAnimationFrame(render);
+            });
+        /* CHILD NODE X SCALING EXAMPLE */
+        document
+            .getElementById("scalingXcube")
+            .addEventListener("input", function (event) {
+                tree.findNode("child1").scale[0] = parseFloat(event.target.value)
+                tree.root.updateWorldMatrix()
+
                 window.requestAnimationFrame(render);
             });
         document
@@ -511,7 +528,8 @@ function main() {
         setupDraw(positions, colorarray)
 
         // Compute Matrix
-        const finalMatrix = transformMatrix();
+        let finalMatrix = transformMatrix();
+        finalMatrix =  matrixMultiplication(finalMatrix, node.worldMatrix)
         gl.uniformMatrix4fv(
             transformLocation,
             false,
@@ -558,18 +576,19 @@ function main() {
         gl.enable(gl.DEPTH_TEST);
         gl.useProgram(program);
 
-        // EXAMPLE - Component rotation
+        // EXAMPLE - Component rotation animation
         // let animrotateMatVal = rotationMatrices(
         //     0,
         //     360 / 1000 * Math.PI,
         //     360 / 1000 * Math.PI,
         // );
-        // decanode.localMatrix = matrixMultiplication(animrotateMatVal[0], decanode.localMatrix)
-        // cubenode.localMatrix = matrixMultiplication(animrotateMatVal[1], cubenode.localMatrix)
-        // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
-        // decanode.updateWorldMatrix()
+        // // decanode.localMatrix = matrixMultiplication(animrotateMatVal[0], decanode.localMatrix)
+        // tree[2].localMatrix = matrixMultiplication(animrotateMatVal[1], tree[2].localMatrix)
+        // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
+        // tree[0].updateWorldMatrix()
 
-        drawObjects(nodes[0])
+        console.log(tree.root);
+        drawObjects(tree.root)
     }
     function animrender() {
         render()

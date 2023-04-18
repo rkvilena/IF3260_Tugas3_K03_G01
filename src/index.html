@@ -109,6 +109,8 @@
                     <br />
                     <input id="type-dodec" type="radio" name="bentuk" value="dodec" />Dodecahedron
                     <br />
+                    <input id="type-model4" type="radio" name="bentuk" value="model4" />Model 4
+                    <br />
                     <input id="type-custom" type="radio" name="bentuk" value="custom" disabled />Model Kustom
                 </div>
                 <br />
@@ -159,6 +161,12 @@
                     <input type="range" name="rotasiZ" min="0" max="360" value="0" id="rotasiZ"
                         oninput="this.nextElementSibling.value = this.value" />
                     <output>0</output>
+
+                    <br />
+                    <label for="rotasiZcube">Z Cube:</label>
+                    <input type="range" name="rotasiZcube" min="0" max="360" value="0" id="rotasiZcube"
+                        oninput="this.nextElementSibling.value = this.value" />
+                    <output>0</output>
                 </div>
                 <br />
                 <div>
@@ -175,6 +183,12 @@
                     <output>0</output>
 
                     <br />
+                    <label for="translasiYcube">Y Cube:</label>
+                    <input type="range" name="translasiYcube" min="-100" max="100" value="0" id="translasiYcube"
+                        oninput="this.nextElementSibling.value = this.value" />
+                    <output>0</output>
+
+                    <br />
                     <label for="translasiZ">Z:</label>
                     <input type="range" name="translasiZ" min="-1000" max="1000" value="0" id="translasiZ"
                         oninput="this.nextElementSibling.value = this.value" />
@@ -185,6 +199,12 @@
                     <h3>SCALING</h3>
                     <label for="scalingX">X:</label>
                     <input type="range" name="scalingX" min="0" max="2" value="1" step="0.1" id="scalingX"
+                        oninput="this.nextElementSibling.value = this.value" />
+                    <output>1</output>
+
+                    <br />
+                    <label for="scalingXcube">X Cube:</label>
+                    <input type="range" name="scalingXcube" min="0" max="2" value="1" step="0.1" id="scalingXcube"
                         oninput="this.nextElementSibling.value = this.value" />
                     <output>1</output>
 

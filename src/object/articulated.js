@@ -80,11 +80,13 @@ export const hierarchy1 = {
     children: [
         {
             name: "child1",
-            source: cube
-        }, 
-        {
-            name: "child2",
-            source: pyramid
+            source: cube,
+            children: [
+                {
+                    name: "child2",
+                    source: pyramid
+                },
+            ]
         },
     ]
 }
