@@ -16,12 +16,14 @@ export class Tree {
         // Root is in index 0
         let node = new Node(hierarchy)
         if (parent){
-            node.setParent(parent)
+            node.setParent(parent);
+        } else {
+            this.root = node;
         }
         this.nodes.push(node)
         if (hierarchy.children != undefined){
             for (const childhierarchy of hierarchy.children) {
-                this.createTree(childhierarchy, node)
+                this.createTree(childhierarchy, node);
             }
         }
     }

@@ -32,8 +32,6 @@ let shading = false;
 let animFrameId;
 let tree = new Tree();
 tree.createTree(renderedmodel)
-tree.root = tree.nodes[0]
-console.log(tree)
 
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas");
