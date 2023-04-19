@@ -244,7 +244,8 @@ function main() {
         document
             .getElementById("translasiYcube")
             .addEventListener("input", function (event) {
-                tree.findNode("child1").translation[1] = parseFloat(event.target.value / 200)
+                tree.findNode("child1").translation[1] = parseFloat(event.target.value / 50)
+                console.log(tree.findNode("child1").translation[1])
                 tree.root.updateWorldMatrix()
 
                 window.requestAnimationFrame(render);
@@ -357,7 +358,7 @@ function main() {
         document
             .getElementById("save")
             .addEventListener("click", function (event) {
-                save(renderedmodel, translation, rotation, scale);
+                save(tree, translation, rotation, scale);
             });
     }
 
@@ -365,6 +366,11 @@ function main() {
         reader.onload = null;
         reader.addEventListener("load", function (event) {
             renderedmodel = JSON.parse(event.target.result);
+            tree = null;
+            tree = new Tree();
+            tree.createTree(renderedmodel)
+            console.log(tree)
+            tree.root.updateWorldMatrix()
             window.requestAnimationFrame(render);
         });
     }
@@ -584,8 +590,6 @@ function main() {
         // tree[2].localMatrix = matrixMultiplication(animrotateMatVal[1], tree[2].localMatrix)
         // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
         // tree[0].updateWorldMatrix()
-
-        console.log(tree.root);
         drawObjects(tree.root)
     }
     function animrender() {
