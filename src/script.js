@@ -16,6 +16,7 @@ import { hierarchy1, hierarchy2 } from "./object/articulated.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
 
+
 ("use strict");
 
 // Hardcoded values----------------------------------------------
@@ -31,6 +32,7 @@ let camRotation = 0;
 let shading = false;
 let animFrameId;
 let tree = new Tree();
+const direction = ["X", "Y", "Z"];
 tree.createTree(renderedmodel)
 
 /** @type {HTMLCanvasElement} */
@@ -91,6 +93,7 @@ function main() {
     const reader = new FileReader();
     projectionListener();
     modelTypeListener();
+    uiController()
     sliderListener();
     resetButton();
     shadingListener();
@@ -101,6 +104,72 @@ function main() {
 
     // Draw
     window.requestAnimationFrame(render);
+
+    function uiController(){
+        // -----------------UI Controller Initialize-----------------
+        var rotateChildSlot = document.getElementById("rotation-for-child")
+        var translateChildSlot = document.getElementById("translation-for-child")
+        var scaleChildSlot = document.getElementById("scale-for-child")
+        rotateChildSlot.innerHTML = ""
+        translateChildSlot.innerHTML = ""
+        scaleChildSlot.innerHTML = ""
+        // -----------------UI Controller Initialize-----------------
+
+        var child = tree.findNode("head")
+        for(var i = 0; i < child.children.length; i++){
+            generateInnerHtml(child.children[i].name, rotateChildSlot, translateChildSlot, scaleChildSlot)
+        }
+    }
+
+    function generateInnerHtml(name, rotateChildSlot, translateChildSlot, scaleChildSlot){
+        var child = tree.findNode(name)
+        if (!child)
+            return ""
+
+        for(var j=0;j<3;j++){
+            (function(){
+                rotateChildSlot.innerHTML += `
+                    <br />
+                    <label for="rotasi${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
+                    <input type="range" name="rotasi${direction[j]}${child.name}" min="0" max="360" value="0" id="rotasi${direction[j]}${child.name}"
+                        oninput="this.nextElementSibling.value = this.value" />
+                    <output>0</output>
+                `
+                let x = 0
+                let innerChild = tree.findNode(name)
+                let childName = innerChild.name
+                let direct = direction[x]
+                let slider = document.getElementById(`rotasi${direct}${childName}`)
+                slider
+                .addEventListener("input", function (event) {
+                    tree.findNode(childName).rotation[x] = parseFloat(event.target.value)
+                    tree.root.updateWorldMatrix()
+                    window.requestAnimationFrame(render);
+                });
+            }())
+
+
+            translateChildSlot.innerHTML += `
+                <br />
+                <label for="translasi${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
+                <input type="range" name="translasi${direction[j]}${child.name}" min="-100" max="100" value="0" id="translasi${direction[j]}${child.name}"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>0</output>
+            `
+
+            scaleChildSlot.innerHTML += `
+                <br />
+                <label for="scaling${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
+                <input type="range" name="scaling${direction[j]}${child.name}" min="0" max="2" value="1" step="0.1" id="scaling${direction[j]}${child.name}"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>1</output>
+            `
+
+        }
+        for(var i = 0; i < child.children.length; i++){
+            generateInnerHtml(child.children[i].name, rotateChildSlot, translateChildSlot, scaleChildSlot)
+        }
+    }
 
     function animationListener() {
         document.getElementById("animation")
@@ -163,16 +232,18 @@ function main() {
             .getElementById("type-cube")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy1;
-                tree = [];
-                createTree(renderedmodel)
+                tree = new Tree();
+                tree.createTree(renderedmodel)
+                uiController();
                 window.requestAnimationFrame(render);
             });
         document
             .getElementById("type-pyramid")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy2;
-                tree = [];
-                createTree(renderedmodel)
+                tree = new Tree();
+                tree.createTree(renderedmodel)
+                uiController();
                 window.requestAnimationFrame(render);
             });
         document
@@ -278,13 +349,13 @@ function main() {
             });
         
         /* CHILD NODE Z ROTATION EXAMPLE */
-        document
-            .getElementById("rotasiZcube")
-            .addEventListener("input", function (event) {
-                tree.findNode("child1").rotation[2] = parseFloat(event.target.value)
-                tree.root.updateWorldMatrix()
-                window.requestAnimationFrame(render);
-            });
+        // document
+        //     .getElementById("rotasiZcube")
+        //     .addEventListener("input", function (event) {
+        //         tree.findNode("child1").rotation[2] = parseFloat(event.target.value)
+        //         tree.root.updateWorldMatrix()
+        //         window.requestAnimationFrame(render);
+        //     });
 
         //SCALE Slider --------------------------------------------------------
         document
@@ -312,6 +383,16 @@ function main() {
             .getElementById("scalingZ")
             .addEventListener("input", function (event) {
                 scale[2] = parseFloat(event.target.value);
+                window.requestAnimationFrame(render);
+            });
+    }
+    function childRotationSliderListenerGenerator(id, node, j) {
+        console.log(id + direction[j] + node)
+        document
+            .getElementById(id + direction[j] + node)
+            .addEventListener("input", function (event) {
+                tree.findNode(node).rotation[j] = parseFloat(event.target.value)
+                tree.root.updateWorldMatrix()
                 window.requestAnimationFrame(render);
             });
     }

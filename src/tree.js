@@ -42,4 +42,14 @@ export class Tree {
         }
         return node;
     }
+
+    findChildren(name){
+        // To find all children of a node using its name
+        let children = [];
+        let node = this.findNode(name);
+        if (node){
+            children = node.children;
+        }
+        return children;
+    }
 }

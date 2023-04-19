@@ -83,7 +83,7 @@ export const hierarchy1 = {
             source: cube,
             children: [
                 {
-                    name: "child2",
+                    name: "child12",
                     source: pyramid
                 },
             ]
@@ -91,12 +91,16 @@ export const hierarchy1 = {
     ]
 }
 export const hierarchy2 = {
-    name: "child1",
+    name: "head",
     source: cube,
     children: [
         {
             name: "child1",
             source: pyramid
         },
+        {
+            name: "child2",
+            source: dodecahedron
+        }
     ]
 }
