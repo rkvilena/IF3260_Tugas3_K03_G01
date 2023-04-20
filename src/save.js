@@ -50,6 +50,8 @@ function saveComponent(source, nodeWorldMat, worldViewMat) {
     const transformedmodel = {
         vertices: transformMat4(source.vertices, finalMat).slice(0, source.vertices.length),
         indices: source.indices,
+        tex_coords: (source.tex_coords)? source.tex_coords : null,
+        tex_indices: (source.tex_indices)? source.tex_indices : null,
         colors: source.colors,
         colorarray: source.colorarray,
         get centroid() {
@@ -72,6 +74,17 @@ function saveComponent(source, nodeWorldMat, worldViewMat) {
                 positions.push(this.vertices[this.indices[i] * 3 + 2]);
             }
             return positions;
+        },
+        get texcoords() {
+            if (!this.tex_coords){
+                return;
+            }
+            var texcoords = [];
+            for (let i = 0; i < this.tex_indices.length; i++) {
+                texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+                texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+            }
+            return texcoords;
         },
         get dimensions() {
             var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
