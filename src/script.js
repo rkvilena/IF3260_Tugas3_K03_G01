@@ -790,25 +790,21 @@ function main() {
         // tree[2].localMatrix = matrixMultiplication(animrotateMatVal[1], tree[2].localMatrix)
         // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
         // tree[0].updateWorldMatrix()
-        var image = document.getElementById("moon-text");
+        var image = document.getElementById("env-text");
         configureTexture(image);
+        gl.activeTexture(gl.TEXTURE0);
         drawObjects(tree.root)
     }
     function animrender() {
         render()
         animFrameId = window.requestAnimationFrame(animrender);
     }
-    function configureTexture( image ) {
+    async function configureTexture( image ) {
         var texture = gl.createTexture();
         gl.bindTexture( gl.TEXTURE_2D, texture );
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB,
-             gl.RGB, gl.UNSIGNED_BYTE, image );
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image );
         gl.generateMipmap( gl.TEXTURE_2D );
-        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
-                          gl.NEAREST_MIPMAP_LINEAR );
-        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
-    
         gl.uniform1i(textureLocation, 0);
     }
 }
