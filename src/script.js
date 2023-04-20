@@ -120,7 +120,7 @@ function main() {
     const reader = new FileReader();
     projectionListener();
     modelTypeListener();
-    uiController()
+    uiController();
     sliderListener();
     resetButton();
     shadingListener();
@@ -153,8 +153,7 @@ function main() {
         if (!child)
             return ""
 
-        let innerChild = tree.findNode(name)
-        let childName = innerChild.name
+        let childName = child.name
 
         for (let j = 0; j < 3; j++) {
             let direct = direction[j]
@@ -166,7 +165,6 @@ function main() {
             rotateSlider.max = 360;
             rotateSlider.value = 0;
             rotateSlider.oninput = function () {
-                console.log("Hello World");
                 this.nextElementSibling.value = this.value;
                 tree.findNode(childName).rotation[j] = parseFloat(this.value)
                 tree.root.updateWorldMatrix()
@@ -412,7 +410,6 @@ function main() {
             .getElementById("translasiYcube")
             .addEventListener("input", function (event) {
                 tree.findNode("child1").translation[1] = parseFloat(event.target.value / 50)
-                console.log(tree.findNode("child1").translation[1])
                 tree.root.updateWorldMatrix()
 
                 window.requestAnimationFrame(render);
@@ -550,7 +547,7 @@ function main() {
             tree = null;
             tree = new Tree();
             tree.createTree(renderedmodel)
-            console.log(tree)
+            uiController();
             tree.root.updateWorldMatrix()
             window.requestAnimationFrame(render);
         });
@@ -563,7 +560,7 @@ function main() {
                 const file = event.target.files[0];
                 reader.readAsText(file);
                 readerListener(reader);
-                document.getElementById("type-custom").checked = true;
+                document.getElementById("articulated-custom").checked = true;
                 event.target.value = "";
             },
             false
