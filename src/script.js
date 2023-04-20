@@ -90,7 +90,7 @@ function main() {
     document.getElementById("valuesy").hidden = true;
     document.getElementById("fieldOfView").hidden = true;
     document.getElementById("valuefov").hidden = true;
-    document.getElementById("type-custom").enable = false;
+    document.getElementById("articulated-custom").enable = false;
     const reader = new FileReader();
     projectionListener();
     modelTypeListener();
@@ -256,7 +256,16 @@ function main() {
     function modelTypeListener() {
         // MODEL TYPE ------------------------------------------------------
         document
-            .getElementById("type-cube")
+            .getElementById("steve")
+            .addEventListener("click", function (event) {
+                renderedmodel = steve;
+                tree = new Tree();
+                tree.createTree(renderedmodel)
+                uiController();
+                window.requestAnimationFrame(render);
+            });
+        document
+            .getElementById("articulated2")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy1;
                 tree = new Tree();
@@ -265,18 +274,18 @@ function main() {
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("type-pyramid")
+            .getElementById("articulated3")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy2;
                 tree = new Tree();
-                tree.createTree(renderedmodel)
+                tree.createTree(renderedmodel);
                 uiController();
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("type-dodec")
+            .getElementById("articulated4")
             .addEventListener("click", function (event) {
-                renderedmodel = steve;
+                renderedmodel = hierarchy3;
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();
@@ -435,7 +444,11 @@ function main() {
             document.getElementById("fieldOfView").hidden = true;
             document.getElementById("valuefov").hidden = true;
             window.cancelAnimationFrame(animFrameId);
-            renderedmodel = example;
+            renderedmodel = steve;
+            tree = new Tree();
+            tree.createTree(renderedmodel);
+            uiController();
+
             rotation = [0, 0, 0];
             translation = [0, 0, 0];
             scale = [1, 1, 1];
