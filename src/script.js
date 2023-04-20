@@ -78,6 +78,14 @@ function main() {
     var textCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
 
+    // Load Initial Texture
+    var image = new Image();
+    image.src = document.getElementById("env-text").src;
+    image.onload = function () {
+        configureTexture(image);
+        gl.activeTexture(gl.TEXTURE0);
+    };
+
     // Get Attributes
     const position = gl.getAttribLocation(shaderProgramRaw, "a_position");
     const color = gl.getAttribLocation(shaderProgramRaw, "a_color");
@@ -243,6 +251,13 @@ function main() {
             .getElementById("type-cube")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy1;
+                // Load Texture
+                var image = new Image();
+                image.src = document.getElementById("env-text").src;
+                image.onload = function () {
+                    configureTexture(image);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
                 tree = new Tree();
                 tree.createTree(renderedmodel)
                 uiController();
@@ -252,6 +267,13 @@ function main() {
             .getElementById("type-pyramid")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy2;
+                // Load Texture
+                var image = new Image();
+                image.src = document.getElementById("env-text").src;
+                image.onload = function () {
+                    configureTexture(image);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
                 tree = new Tree();
                 tree.createTree(renderedmodel)
                 uiController();
@@ -261,6 +283,13 @@ function main() {
             .getElementById("type-dodec")
             .addEventListener("click", function (event) {
                 renderedmodel = dodecahedron;
+                // Load Texture
+                var image = new Image();
+                image.src = document.getElementById("env-text").src;
+                image.onload = function () {
+                    configureTexture(image);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
                 tree = [];
                 createTree(renderedmodel)
                 window.requestAnimationFrame(render);
@@ -616,12 +645,12 @@ function main() {
         );
         gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
 
-        //Texture
+        // Texture
         gl.enableVertexAttribArray(textCoordLocation);
         gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
         gl.bufferData(
             gl.ARRAY_BUFFER,
-            new Uint8Array(textCoordArray),
+            new Float32Array(textCoordArray),
             gl.STATIC_DRAW
         );
         gl.vertexAttribPointer(textCoordLocation, 2, gl.FLOAT, false, 0, 0);
@@ -631,7 +660,7 @@ function main() {
     function drawObject(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        const textCoordArray = new Float32Array([
+        const textCoordArray = [
             // Front
             0, 0,
             1, 0,
@@ -678,7 +707,8 @@ function main() {
             0, 1,
             0, 0,
             0, 1,
-            1, 1,])
+            1, 1,
+        ];
         setupDraw(positions, colorarray, textCoordArray)
 
         // Compute Matrix
@@ -696,7 +726,7 @@ function main() {
     function drawObjectAnim(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        const textCoordArray = new Float32Array([
+        const textCoordArray = [
             // Front
             0, 0,
             1, 0,
@@ -743,7 +773,8 @@ function main() {
             0, 1,
             0, 0,
             0, 1,
-            1, 1,])
+            1, 1,
+        ];
         setupDraw(positions, colorarray, textCoordArray)
 
         // Compute Matrix
@@ -791,20 +822,13 @@ function main() {
         // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
         // tree[0].updateWorldMatrix()
 
-        var image = new Image();
-        image.onload = function () {
-            configureTexture(image);
-            gl.activeTexture(gl.TEXTURE0);
-        };
-        image.src = document.getElementById("env-text").src;
-
         drawObjects(tree.root)
     }
     function animrender() {
         render()
         animFrameId = window.requestAnimationFrame(animrender);
     }
-    function configureTexture( image ) {
+    function configureTexture( path ) {
         var texture = gl.createTexture();
         gl.bindTexture( gl.TEXTURE_2D, texture );
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
