@@ -1,0 +1,125 @@
+{
+    "for": "steve",
+    "frames": [
+        {
+            "transforms": [
+                {
+                    "name": "body",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "head",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                }
+            ]
+        },
+        {
+            "transforms": [
+                {
+                    "name": "body",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "head",
+                    "translation": [0, 0, 0],
+                    "rotation": [10, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [10, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [350, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [350, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [10, 0, 0],
+                    "scale": [1, 1, 1]
+                }
+            ]
+        },
+        {
+            "transforms": [
+                {
+                    "name": "body",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "head",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightArm",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "leftLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                },
+                {
+                    "name": "rightLeg",
+                    "translation": [0, 0, 0],
+                    "rotation": [0, 0, 0],
+                    "scale": [1, 1, 1]
+                }
+            ]
+        }
+    ]
+}
