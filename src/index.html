@@ -186,96 +186,80 @@
                 <br />
             </div>
             <div>
-                <div>
-                    <h3>ROTASI</h3>
-                    <label for="rotasiX">X:</label>
-                    <input type="range" name="rotasiX" min="0" max="360" value="0" id="rotasiX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiY">Y:</label>
-                    <input type="range" name="rotasiY" min="0" max="360" value="0" id="rotasiY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiZ">Z:</label>
-                    <input type="range" name="rotasiZ" min="0" max="360" value="0" id="rotasiZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiZcube">Z Cube:</label>
-                    <input type="range" name="rotasiZcube" min="0" max="360" value="0" id="rotasiZcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <div id="rotation-for-child">
-
+                <div class="slider-container">
+                    <div>
+                        <h3>ROTASI</h3>
+                        <label for="rotasiX">X:</label>
+                        <input type="range" name="rotasiX" min="0" max="360" value="0" id="rotasiX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="rotasiY">Y:</label>
+                        <input type="range" name="rotasiY" min="0" max="360" value="0" id="rotasiY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="rotasiZ">Z:</label>
+                        <input type="range" name="rotasiZ" min="0" max="360" value="0" id="rotasiZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <div id="rotation-for-child">
+    
+                        </div>
                     </div>
-                </div>
-                <br />
-                <div>
-                    <h3>TRANSLASI</h3>
-                    <label for="translasiX">X:</label>
-                    <input type="range" name="translasiX" min="-100" max="100" value="0" id="translasiX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
                     <br />
-                    <label for="translasiY">Y:</label>
-                    <input type="range" name="translasiY" min="-100" max="100" value="0" id="translasiY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="translasiYcube">Y Cube:</label>
-                    <input type="range" name="translasiYcube" min="-100" max="100" value="0" id="translasiYcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="translasiZ">Z:</label>
-                    <input type="range" name="translasiZ" min="-1000" max="1000" value="0" id="translasiZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <div id="translation-for-child">
-
+                    <div>
+                        <h3>TRANSLASI</h3>
+                        <label for="translasiX">X:</label>
+                        <input type="range" name="translasiX" min="-100" max="100" value="0" id="translasiX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="translasiY">Y:</label>
+                        <input type="range" name="translasiY" min="-100" max="100" value="0" id="translasiY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="translasiZ">Z:</label>
+                        <input type="range" name="translasiZ" min="-1000" max="1000" value="0" id="translasiZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <div id="translation-for-child">
+    
+                        </div>
                     </div>
-                </div>
-                <br />
-                <div>
-                    <h3>SCALING</h3>
-                    <label for="scalingX">X:</label>
-                    <input type="range" name="scalingX" min="0" max="2" value="1" step="0.1" id="scalingX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
                     <br />
-                    <label for="scalingXcube">X Cube:</label>
-                    <input type="range" name="scalingXcube" min="0" max="2" value="1" step="0.1" id="scalingXcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <br />
-                    <label for="scalingY">Y:</label>
-                    <input type="range" name="scalingY" min="0" max="2" value="1" step="0.1" id="scalingY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <br />
-                    <label for="scalingZ">Z:</label>
-                    <input type="range" name="scalingZ" min="0" max="2" value="1" step="0.1" id="scalingZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <div id="scale-for-child">
-
+                    <div>
+                        <h3>SCALING</h3>
+                        <label for="scalingX">X:</label>
+                        <input type="range" name="scalingX" min="0" max="2" value="1" step="0.1" id="scalingX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <br />
+                        <label for="scalingY">Y:</label>
+                        <input type="range" name="scalingY" min="0" max="2" value="1" step="0.1" id="scalingY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <br />
+                        <label for="scalingZ">Z:</label>
+                        <input type="range" name="scalingZ" min="0" max="2" value="1" step="0.1" id="scalingZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <div id="scale-for-child">
+    
+                        </div>
                     </div>
+                    <br />
                 </div>
-                <br />
                 <div>
                     <input type="reset" id="reset" name="reset" value="Reset" />
                 </div>

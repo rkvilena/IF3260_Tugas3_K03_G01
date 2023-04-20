@@ -37,6 +37,12 @@ canvas {
   color: #ffffff;
 }
 
+.slider-container {
+  height: 85vh;
+  overflow: auto;
+  margin-bottom: 5px;
+}
+
 #help {
   position: absolute;
   bottom: 2em;

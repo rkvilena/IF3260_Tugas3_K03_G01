@@ -405,15 +405,6 @@ function main() {
                 translation[1] = parseFloat(event.target.value / 200);
                 window.requestAnimationFrame(render);
             });
-        /* CHILD NODE Y TRANSLATION EXAMPLE */
-        document
-            .getElementById("translasiYcube")
-            .addEventListener("input", function (event) {
-                tree.findNode("child1").translation[1] = parseFloat(event.target.value / 50)
-                tree.root.updateWorldMatrix()
-
-                window.requestAnimationFrame(render);
-            });
         document
             .getElementById("translasiZ")
             .addEventListener("input", function (event) {
@@ -440,30 +431,12 @@ function main() {
                 rotation[2] = parseFloat(event.target.value);
                 window.requestAnimationFrame(render);
             });
-        
-        /* CHILD NODE Z ROTATION EXAMPLE */
-        // document
-        //     .getElementById("rotasiZcube")
-        //     .addEventListener("input", function (event) {
-        //         tree.findNode("child1").rotation[2] = parseFloat(event.target.value)
-        //         tree.root.updateWorldMatrix()
-        //         window.requestAnimationFrame(render);
-        //     });
 
         //SCALE Slider --------------------------------------------------------
         document
             .getElementById("scalingX")
             .addEventListener("input", function (event) {
                 scale[0] = parseFloat(event.target.value);
-                window.requestAnimationFrame(render);
-            });
-        /* CHILD NODE X SCALING EXAMPLE */
-        document
-            .getElementById("scalingXcube")
-            .addEventListener("input", function (event) {
-                tree.findNode("child1").scale[0] = parseFloat(event.target.value)
-                tree.root.updateWorldMatrix()
-
                 window.requestAnimationFrame(render);
             });
         document
