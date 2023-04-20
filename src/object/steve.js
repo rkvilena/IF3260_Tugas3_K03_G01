@@ -76,7 +76,16 @@ export const body = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -87,6 +96,23 @@ export const body = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
 export const head = {
@@ -115,7 +141,16 @@ export const head = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -154,7 +189,16 @@ export const leftarm = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -193,7 +237,16 @@ export const rightarm = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -232,7 +285,16 @@ export const leftleg = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -271,7 +333,16 @@ export const rightleg = {
         return colorarray.flat();
     },
     get centroid() {
-        return [0, 0, 0];
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
     },
     get positions() {
         var positions = [];
@@ -287,26 +358,52 @@ export const rightleg = {
 export const steve = {
     name: "body",
     source: body,
+    pivot: body.centroid,
     children: [
         {
             name: "head",
             source: head,
+            pivot: [
+                0,
+                body.centroid[1] + body.dimensions[1] / 2,
+                0,
+            ],
         },
         {
             name: "leftarm",
             source: leftarm,
+            pivot: [
+                body.centroid[0] + body.dimensions[0] / 2,
+                (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
+                0,
+            ],
         },
         {
             name: "rightarm",
             source: rightarm,
+            pivot: [
+                body.centroid[0] - body.dimensions[0] / 2,
+                (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
+                0,
+            ],
         },
         {
             name: "leftleg",
             source: leftleg,
+            pivot: [
+                body.centroid[0] + body.dimensions[0] / 2 * 0.5,
+                body.centroid[1] - body.dimensions[1] / 2,
+                0,
+            ],
         },
         {
             name: "rightleg",
             source: rightleg,
+            pivot: [
+                body.centroid[0] - body.dimensions[0] / 2 * 0.5,
+                body.centroid[1] - body.dimensions[1] / 2,
+                0,
+            ],
         },
     ]
 }
