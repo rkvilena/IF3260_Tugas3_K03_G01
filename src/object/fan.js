@@ -324,7 +324,7 @@ export const fanswitch = {
 export const fan = {
     class: "fan",
     asset: "enviroment.jpg",
-    pixelated: true,
+    pixelated: false,
     name: "body",
     source: body,
     pivot: body.centroid,

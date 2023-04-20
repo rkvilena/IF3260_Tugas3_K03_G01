@@ -10,7 +10,6 @@ import {
     lookAtMatrix,
     rotationMatrices
 } from "./math.js";
-import { hierarchy1 } from "./object/articulated.js"
 import { steve } from "./object/steve.js";
 import { giraffe } from "./object/giraffe.js";
 import { fan } from "./object/fan.js";
@@ -22,10 +21,15 @@ import { Tree } from "./tree.js"
 
 // Hardcoded values----------------------------------------------
 let renderedmodel = steve;
+let modelmap = new Map();
+modelmap.set(steve.class, steve);
+modelmap.set(giraffe.class, giraffe);
+modelmap.set(fan.class, fan);
+modelmap.set(sheep.class, sheep);
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];
-let shear = [116.565, 63.435];
+let shear = [116.565, 116.565];
 let fieldOfViewRadians = (120 * Math.PI) / 180;
 let height = 0.0;
 let radius = 1.0;
@@ -297,10 +301,12 @@ function main() {
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
+                    window.requestAnimationFrame(render);
                 };
                 tree = new Tree();
                 tree.createTree(renderedmodel)
                 uiController();
+                document.getElementById("controller").classList.add("hidden");
                 window.requestAnimationFrame(render);
             });
         document
@@ -314,10 +320,12 @@ function main() {
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
+                    window.requestAnimationFrame(render);
                 };
                 tree = new Tree();
                 tree.createTree(renderedmodel)
                 uiController();
+                document.getElementById("controller").classList.add("hidden");
                 window.requestAnimationFrame(render);
             });
         document
@@ -331,10 +339,12 @@ function main() {
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
+                    window.requestAnimationFrame(render);
                 };
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();
+                document.getElementById("controller").classList.add("hidden");
                 window.requestAnimationFrame(render);
             });
         document
@@ -348,10 +358,12 @@ function main() {
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
+                    window.requestAnimationFrame(render);
                 };
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();
+                document.getElementById("controller").classList.add("hidden");
                 window.requestAnimationFrame(render);
             });
         document
@@ -369,6 +381,7 @@ function main() {
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();
+                document.getElementById("controller").classList.add("hidden");
                 window.requestAnimationFrame(render);
             });
     }
@@ -582,6 +595,30 @@ function main() {
         readerAnim.onload = null;
         readerAnim.addEventListener("load", function (event) {
             animation = JSON.parse(event.target.result);
+            if (animation.for != renderedmodel.class) {
+                if (modelmap.get(animation.for)) {
+                    document.getElementById(renderedmodel.class).checked = false;
+                    renderedmodel = modelmap.get(animation.for);
+                    document.getElementById(renderedmodel.class).checked = true;
+                    var image = new Image();
+                    image.src = "./assets/" + renderedmodel.asset;
+                    console.log(image.src);
+                    image.onload = function () {
+                        configureTexture(image, renderedmodel.pixelated);
+                        gl.activeTexture(gl.TEXTURE0);
+                        window.requestAnimationFrame(render);
+                    };
+                    tree = null;
+                    tree = new Tree();
+                    tree.createTree(renderedmodel)
+                    uiController();
+                    tree.root.updateWorldMatrix()
+                    window.requestAnimationFrame(render);
+                } else {
+                    alert("There is no model that fits this animation!");
+                    return;
+                }
+            }
             document.getElementById("controller").classList.remove("hidden");
             document.getElementById("frame").max = animation.frames.length;
             document.getElementById("duration").value = parseFloat(animation.duration);

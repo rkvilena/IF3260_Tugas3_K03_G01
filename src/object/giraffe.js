@@ -812,8 +812,9 @@ export const leftleg = {
 
 export const giraffe = {
     class: "giraffe",
-    name: "body",
     asset: "moon.jpg",
+    pixelated: false,
+    name: "body",
     source: body,
     pivot: body.centroid,
     children: [
