@@ -37,6 +37,10 @@ canvas {
   color: #ffffff;
 }
 
+.hidden {
+  display: none;
+}
+
 .slider-container {
   height: 85vh;
   overflow: auto;

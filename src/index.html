@@ -175,7 +175,7 @@
                         oninput="this.nextElementSibling.value = this.value" />
                     <output id="valuefov">120</output>
                 </div>
-                <br>
+                <br />
                 <div>
                     <h3>SHADING & ANIMASI</h3>
                     <input id="shading" type="checkbox" name="shading" value="shading" />
@@ -271,6 +271,34 @@
         <h3>LOAD & SAVE</h3>
         <input id="load" type="file" name="loadmodel" /> <br><br>
         <button id="save" name="savemodel">Save</button>
+        <div>
+            <h3>ANIMATION</h3>
+            <button type="button" id="newanim" name="newanim">New</button> <br /><br />
+            <input id="loadanim" type="file" name="loadanim" /> <br /><br />
+            <button type="button" id="saveanim" name="saveanim">Save</button> <br /><br />
+            <div id="controller" class="hidden">
+                <p>Duration</p>
+                <input type="range" name="duration" min="0.1" max="5" step="0.1" value="1" id="duration"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>1</output> <br /><br />
+                <p>Frame</p>
+                <input type="range" name="frame" min="1" max="1" value="1" id="frame"
+                    oninput="this.nextElementSibling.value = this.value" />
+                <output>1</output> <button type="button" id="addframe" name="addframe">+</button> <br /><br />
+                <button type="button" id="saveframe" name="saveframe">Save Frame</button>
+                <button type="button" id="deleteframe" name="deleteframe">Delete Frame</button> <br /><br />
+                <button type="button" id="swapprevframe" name="swapprevframe">Swap Prev</button>
+                <button type="button" id="swapnextframe" name="swapnextframe">Swap Next</button> <br /><br />
+                <button type="button" id="prevframe" name="prevframe">Prev Frame</button>
+                <button type="button" id="nextframe" name="nextframe">Next Frame</button> <br /><br />
+                <button type="button" id="playanim" name="playanim">Play</button> <button type="button"
+                    id="pauseanim" name="pauseanim">Pause</button><br /><br />
+                <button type="button" id="reverseanim" name="reverseanim">Reverse</button> <button type="button"
+                    id="replayanim" name="replayanim">Replay</button><br /><br />
+                <input id="loop" type="checkbox" name="loop" value="loop" />
+                <label for="loop">Loop</label>
+            </div>
+        </div>
     </div>
     </div>
     </div>

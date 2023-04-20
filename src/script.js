@@ -8,15 +8,14 @@ import {
     inverseMatrix,
     orthographicMatrix,
     lookAtMatrix,
-    rotationMatrices,
-    identityMatrix
+    rotationMatrices
 } from "./math.js";
 import { hierarchy1 } from "./object/articulated.js"
 import { steve } from "./object/steve.js";
 import { giraffe } from "./object/giraffe.js";
 import { fan } from "./object/fan.js";
 import { sheep } from "./object/sheep.js";
-import { save } from "./save.js";
+import { save, saveAnimation } from "./save.js";
 import { Tree } from "./tree.js"
 
 ("use strict");
@@ -33,7 +32,11 @@ let radius = 1.0;
 let camRotation = 0;
 let shading = false;
 let colors = false;
-let animFrameId;
+let animation = null;
+let animate = false;
+let reverse = false;
+let loop = false;
+var fpsInterval, startTime, now, then, elapsed;
 let tree = new Tree();
 const direction = ["X", "Y", "Z"];
 tree.createTree(renderedmodel)
@@ -118,6 +121,7 @@ function main() {
     document.getElementById("fieldOfView").hidden = true;
     document.getElementById("valuefov").hidden = true;
     const reader = new FileReader();
+    const readerAnim = new FileReader();
     projectionListener();
     modelTypeListener();
     uiController();
@@ -127,6 +131,8 @@ function main() {
     saveListener();
     readerListener(reader);
     loadListener();
+    readerAnimationListener(readerAnim);
+    loadAnimationListener();
     animationListener();
 
     // Draw
@@ -572,6 +578,262 @@ function main() {
         );
     }
 
+    function readerAnimationListener(readerAnim) {
+        readerAnim.onload = null;
+        readerAnim.addEventListener("load", function (event) {
+            animation = JSON.parse(event.target.result);
+            document.getElementById("controller").classList.remove("hidden");
+            document.getElementById("frame").max = animation.frames.length;
+            document.getElementById("duration").value = parseFloat(animation.duration);
+            document.getElementById("duration").nextElementSibling.value = parseFloat(animation.duration);
+            tree.applyAnimation(animation.frames[0]);
+            tree.root.updateWorldMatrix();
+            window.requestAnimationFrame(render);
+        });
+    }
+
+    function loadAnimationListener() {
+        document.getElementById("newanim").addEventListener(
+            "click",
+            function (event) {
+                animation = {
+                    for: renderedmodel.class,
+                    duration: 1,
+                    frames: [
+                    ],
+                };
+                let initialFrame = {};
+                Object.assign(initialFrame, tree.getAnimation());
+                animation.frames.push(initialFrame);
+                document.getElementById("controller").classList.remove("hidden");
+            },
+            false
+        );
+        
+        document.getElementById("duration").addEventListener(
+            "input",
+            function (event) {
+                const duration = parseFloat(event.target.value);
+                animation.duration = duration;
+                fpsInterval = 1000 * parseFloat(animation.duration) / animation.frames.length;
+            },
+            false
+        );
+
+        document.getElementById("loadanim").addEventListener(
+            "change",
+            function (event) {
+                const file = event.target.files[0];
+                readerAnim.readAsText(file);
+            },
+            false
+        );
+
+        document.getElementById("saveanim").addEventListener(
+            "click",
+            function (event) {
+                saveAnimation(animation, renderedmodel.class);
+            },
+            false
+        );
+        
+        document.getElementById("frame").addEventListener(
+            "input",
+            function (event) {
+                const index = parseInt(event.target.value);
+                tree.applyAnimation(animation.frames[index - 1]);
+                tree.root.updateWorldMatrix();
+                window.requestAnimationFrame(render);
+            },
+            false
+        );
+
+        document.getElementById("addframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                animation.frames.splice(index, 0, tree.getAnimation());
+                tree.applyAnimation(animation.frames[index]);
+                tree.root.updateWorldMatrix();
+                window.requestAnimationFrame(render);
+                frame.max = animation.frames.length;
+                frame.value = index + 1;
+                frame.nextElementSibling.value = index + 1;
+            },
+            false
+        );
+
+        document.getElementById("saveframe").addEventListener(
+            "click",
+            function (event) {
+                const index = parseInt(document.getElementById("frame").value);
+                animation.frames[index - 1] = tree.getAnimation();
+            },
+            false
+        );
+
+        document.getElementById("deleteframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                if (animation.frames.length < 2) return;
+                if (index > 1) {
+                    animation.frames.splice(index - 1, 1);
+                    tree.applyAnimation(animation.frames[index - 2]);
+                    tree.root.updateWorldMatrix();
+                    window.requestAnimationFrame(render);
+                    frame.max = animation.frames.length;
+                    frame.value = index - 2;
+                    frame.nextElementSibling.value = index - 2;
+                }
+            },
+            false
+        );
+
+        document.getElementById("swapprevframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                if (index > 1) {
+                    const temp = animation.frames[index - 2];
+                    animation.frames[index - 2] = animation.frames[index - 1];
+                    animation.frames[index - 1] = temp;
+                    frame.value = index - 1;
+                    frame.nextElementSibling.value = index - 1;
+                } else {
+                    const temp = animation.frames[animation.frames.length - 1];
+                    animation.frames[animation.frames.length - 1] = animation.frames[index - 1];
+                    animation.frames[index - 1] = temp;
+                    frame.value = animation.frames.length;
+                    frame.nextElementSibling.value = animation.frames.length;
+                }
+            },
+            false
+        );
+
+        document.getElementById("swapnextframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                if (index < animation.frames.length) {
+                    const temp = animation.frames[index];
+                    animation.frames[index] = animation.frames[index - 1];
+                    animation.frames[index - 1] = temp;
+                    frame.value = index + 1;
+                    frame.nextElementSibling.value = index + 1;
+                } else {
+                    const temp = animation.frames[0];
+                    animation.frames[0] = animation.frames[index - 1];
+                    animation.frames[index - 1] = temp;
+                    frame.value = 1;
+                    frame.nextElementSibling.value = 1;
+                }
+            },
+            false
+        );
+
+        document.getElementById("prevframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                if (index > 1) {
+                    tree.applyAnimation(animation.frames[index - 2]);
+                    tree.root.updateWorldMatrix();
+                    window.requestAnimationFrame(render);
+                    frame.value = index - 1;
+                    frame.nextElementSibling.value = index - 1;
+                } else {
+                    tree.applyAnimation(animation.frames[animation.frames.length - 1]);
+                    tree.root.updateWorldMatrix();
+                    window.requestAnimationFrame(render);
+                    frame.value = animation.frames.length;
+                    frame.nextElementSibling.value = animation.frames.length;
+                }
+            },
+            false
+        );
+
+        document.getElementById("nextframe").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                const index = parseInt(frame.value);
+                if (index < animation.frames.length) {
+                    tree.applyAnimation(animation.frames[index]);
+                    tree.root.updateWorldMatrix();
+                    window.requestAnimationFrame(render);
+                    frame.value = index + 1;
+                    frame.nextElementSibling.value = index + 1;
+                } else {
+                    tree.applyAnimation(animation.frames[0]);
+                    tree.root.updateWorldMatrix();
+                    window.requestAnimationFrame(render);
+                    frame.value = 1;
+                    frame.nextElementSibling.value = 1;
+                }
+            },
+            false
+        );
+
+        document.getElementById("playanim").addEventListener(
+            "click",
+            function (event) {
+                startAnimation();
+            },
+            false
+        );
+
+        document.getElementById("pauseanim").addEventListener(
+            "click",
+            function (event) {
+                animate = false;
+                reverse = false;
+            },
+            false
+        );
+
+        document.getElementById("reverseanim").addEventListener(
+            "click",
+            function (event) {
+                reverse = true;
+                startAnimation();
+            },
+            false
+        );
+
+        document.getElementById("replayanim").addEventListener(
+            "click",
+            function (event) {
+                const frame = document.getElementById("frame");
+                tree.applyAnimation(animation.frames[0]);
+                tree.root.updateWorldMatrix();
+                frame.value = 1;
+                frame.nextElementSibling.value = 1;
+                window.requestAnimationFrame(render);
+                startAnimation();
+            },
+            false
+        );
+
+
+        document.getElementById("loop").addEventListener(
+            "click",
+            function (event) {
+                if (event.target.checked) {
+                    loop = true;
+                } else {
+                    loop = false;
+                }
+            },
+            false
+        );
+    }
+
     function resizeCanvasToDisplaySize(canvas) {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
@@ -674,11 +936,7 @@ function main() {
 
     // Draw hierarchical object
     function drawObjects(node) {
-        if (document.getElementById("animation").checked){
-            drawObjectAnim(node)
-        } else {
-            drawObject(node)
-        }
+        drawObject(node);
         if (node.children != undefined) {
             for (const child of node.children) {
                 drawObjects(child) // recursion call
@@ -739,25 +997,6 @@ function main() {
         gl.drawArrays(gl.TRIANGLES, 0, node.source.indices.length);
     }
 
-    // Draw animated component buffer (current object)
-    function drawObjectAnim(node) {
-        const positions = node.source.positions;
-        const colorarray = node.source.colorarray;
-        const textCoordArray = node.source.texcoords;
-        setupDraw(positions, colorarray, textCoordArray);
-
-        // Compute Matrix
-        let finalMatrix = transformMatrix();
-        finalMatrix =  matrixMultiplication(finalMatrix, node.worldMatrix)
-        gl.uniformMatrix4fv(
-            transformLocation,
-            false,
-            new Float32Array(finalMatrix)
-        );
-
-        gl.drawArrays(gl.TRIANGLES, 0, node.source.indices.length);
-    }
-
     // Rendering
     function render() {
         // Implement shading
@@ -795,10 +1034,62 @@ function main() {
 
         drawObjects(tree.root)
     }
-    function animrender() {
-        render()
-        animFrameId = window.requestAnimationFrame(animrender);
+
+    function startAnimation() {
+        fpsInterval = 1000 * parseFloat(animation.duration) / animation.frames.length;
+        then = Date.now();
+        startTime = then;
+        animate = true;
+        animrender();
     }
+
+    function animrender() {
+        if (animate) window.requestAnimationFrame(animrender);
+
+        now = Date.now();
+        elapsed = now - then;
+
+        if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval);
+
+            const frame = document.getElementById("frame");
+            const index = parseInt(frame.value);
+
+            if (reverse) {
+                if (index > 1) {
+                    tree.applyAnimation(animation.frames[index - 2]);
+                    tree.root.updateWorldMatrix();
+                    frame.value = index - 1;
+                    frame.nextElementSibling.value = index - 1;
+                } else if (loop) {
+                    tree.applyAnimation(animation.frames[animation.frames.length - 1]);
+                    tree.root.updateWorldMatrix();
+                    frame.value = animation.frames.length;
+                    frame.nextElementSibling.value = animation.frames.length;
+                } else {
+                    animate = false;
+                    reverse = false;
+                }
+            } else {
+                if (index < animation.frames.length) {
+                    tree.applyAnimation(animation.frames[index]);
+                    tree.root.updateWorldMatrix();
+                    frame.value = index + 1;
+                    frame.nextElementSibling.value = index + 1;
+                } else if (loop) {
+                    tree.applyAnimation(animation.frames[0]);
+                    tree.root.updateWorldMatrix();
+                    frame.value = 1;
+                    frame.nextElementSibling.value = 1;
+                } else {
+                    animate = false;
+                }
+            }
+
+            render();
+        }
+    }
+
     function configureTexture( image, pixelated ) {
         var texture = gl.createTexture();
         gl.bindTexture( gl.TEXTURE_2D, texture );

@@ -92,7 +92,6 @@ export const body = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -208,7 +207,6 @@ export const head = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -230,7 +228,7 @@ export const head = {
     }
 };
 
-export const rightarm = {
+export const leftarm = {
     vertices: [
         0.23141198356202314, -0.21212765159852118, 0.11570599178101157,
         0.4628239671240463, -0.21212765159852118, 0.11570599178101157,
@@ -324,7 +322,6 @@ export const rightarm = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -346,7 +343,7 @@ export const rightarm = {
     }
 };
 
-export const leftarm = {
+export const rightarm = {
     vertices: [
         -0.4628239671240463, -0.21212765159852118, 0.11570599178101157,
         -0.23141198356202314, -0.21212765159852118, 0.11570599178101157,
@@ -440,7 +437,6 @@ export const leftarm = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -462,7 +458,7 @@ export const leftarm = {
     }
 };
 
-export const rightleg = {
+export const leftleg = {
     vertices: [
         6.585232947956046e-18, -0.9063636022845906, 0.11570599178101157,
         0.23141198356202314, -0.9063636022845906, 0.11570599178101157,
@@ -556,7 +552,6 @@ export const rightleg = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -578,7 +573,7 @@ export const rightleg = {
     }
 };
 
-export const leftleg = {
+export const rightleg = {
     vertices: [
         -0.23141198356202314, -0.9063636022845906, 0.11570599178101157,
         6.585232947956046e-18, -0.9063636022845906, 0.11570599178101157,
@@ -672,7 +667,6 @@ export const leftleg = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
