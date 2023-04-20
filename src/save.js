@@ -4,38 +4,54 @@ import {
 } from "./math.js";
 
 export function save(tree, translation, rotation, scale) {
-    let worldViewMat = worldViewTransformation(translation, rotation, scale);
-    const hierarchy = saveNodeToHierarchy(tree.root, worldViewMat);
+    // let worldViewMat = worldViewTransformation(translation, rotation, scale);
+    const hierarchy = saveNodeToHierarchy(tree.root);
     const jsonString = JSON.stringify(hierarchy);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = "hierarchy.json";
+    link.download = `custom-articulated.json`;
     link.href = url;
     link.click();
 }
 
-function saveNodeToHierarchy(node, worldViewMat) {
+function saveNodeToHierarchy(node) {
     let hierarchynode = {
         name: node.name,
-        source: saveComponent(node.source, node.worldMatrix, worldViewMat)
+        source: saveComponent(node.source, node.worldMatrix),
+        pivot: node.pivot
+    }
+    if (!node.parent){ // has no parent or ROOT
+        hierarchynode.class = node.class;
     }
     if (node.children.length > 0) {
         hierarchynode.children = [];
         for (const child of node.children) {
-            hierarchynode.children.push(saveNodeToHierarchy(child, worldViewMat));
+            hierarchynode.children.push(saveNodeToHierarchy(child));
         }
     }
     return hierarchynode;
 }
 
 function saveComponent(source, nodeWorldMat, worldViewMat) {
-    let finalMat = matrixMultiplication(worldViewMat, nodeWorldMat);
+    let finalMat = nodeWorldMat
     const transformedmodel = {
         vertices: transformMat4(source.vertices, finalMat).slice(0, source.vertices.length),
         indices: source.indices,
         colors: source.colors,
         colorarray: source.colorarray,
+        get centroid() {
+            var cent = [0, 0, 0];
+            for (var i = 0; i < this.indices.length; i++) {
+                cent[0] += this.vertices[this.indices[i] * 3];
+                cent[1] += this.vertices[this.indices[i] * 3 + 1];
+                cent[2] += this.vertices[this.indices[i] * 3 + 2];
+            }
+            cent[0] /= this.indices.length;
+            cent[1] /= this.indices.length;
+            cent[2] /= this.indices.length;
+            return cent;
+        },
         get positions() {
             var positions = [];
             for (var i = 0; i < this.indices.length; i++) {
@@ -43,8 +59,25 @@ function saveComponent(source, nodeWorldMat, worldViewMat) {
                 positions.push(this.vertices[this.indices[i] * 3 + 1]);
                 positions.push(this.vertices[this.indices[i] * 3 + 2]);
             }
-            return positions
+            return positions;
         },
+        get dimensions() {
+            var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
+            var min = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
+            for (var i = 1; i < this.indices.length; i++) {
+                max = [
+                    Math.max(max[0], this.vertices[this.indices[i] * 3]),
+                    Math.max(max[1], this.vertices[this.indices[i] * 3 + 1]),
+                    Math.max(max[2], this.vertices[this.indices[i] * 3 + 2])
+                ];
+                min = [
+                    Math.min(min[0], this.vertices[this.indices[i] * 3]),
+                    Math.min(min[1], this.vertices[this.indices[i] * 3 + 1]),
+                    Math.min(min[2], this.vertices[this.indices[i] * 3 + 2])
+                ];
+            }
+            return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+        }
     };
     return transformedmodel;
 }
