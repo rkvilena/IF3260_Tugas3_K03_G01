@@ -11,15 +11,17 @@ import {
     rotationMatrices,
     identityMatrix
 } from "./math.js";
-import { cube, dodecahedron, pyramid } from "./object/models.js";
-import { hierarchy1, hierarchy2, threebox } from "./object/articulated.js";
+import { hierarchy1 } from "./object/articulated.js"
+import { steve } from "./object/steve.js";
+import { sheep } from "./object/sheep.js";
+import { fan } from "./object/fan.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
 
 ("use strict");
 
 // Hardcoded values----------------------------------------------
-let renderedmodel = threebox;
+let renderedmodel = steve;
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];
@@ -108,7 +110,7 @@ function main() {
     document.getElementById("valuesy").hidden = true;
     document.getElementById("fieldOfView").hidden = true;
     document.getElementById("valuefov").hidden = true;
-    document.getElementById("type-custom").enable = false;
+    document.getElementById("articulated-custom").enable = false;
     const reader = new FileReader();
     projectionListener();
     modelTypeListener();
@@ -124,7 +126,7 @@ function main() {
     // Draw
     window.requestAnimationFrame(render);
 
-    function uiController(){
+    function uiController() {
         // -----------------UI Controller Initialize-----------------
         var rotateChildSlot = document.getElementById("rotation-for-child")
         var translateChildSlot = document.getElementById("translation-for-child")
@@ -134,59 +136,86 @@ function main() {
         scaleChildSlot.innerHTML = ""
         // -----------------UI Controller Initialize-----------------
 
-        var child = tree.findNode("head")
-        for(var i = 0; i < child.children.length; i++){
-            generateInnerHtml(child.children[i].name, rotateChildSlot, translateChildSlot, scaleChildSlot)
+        let child = tree.root
+        for (const element of child.children) {
+            generateInnerHtml(element.name, rotateChildSlot, translateChildSlot, scaleChildSlot)
         }
     }
 
-    function generateInnerHtml(name, rotateChildSlot, translateChildSlot, scaleChildSlot){
-        var child = tree.findNode(name)
+    function generateInnerHtml(name, rotateChildSlot, translateChildSlot, scaleChildSlot) {
+        let child = tree.findNode(name)
         if (!child)
             return ""
 
-        for(var j=0;j<3;j++){
-            (function(){
-                rotateChildSlot.innerHTML += `
-                    <br />
-                    <label for="rotasi${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
-                    <input type="range" name="rotasi${direction[j]}${child.name}" min="0" max="360" value="0" id="rotasi${direction[j]}${child.name}"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-                `
-                let x = 0
-                let innerChild = tree.findNode(name)
-                let childName = innerChild.name
-                let direct = direction[x]
-                let slider = document.getElementById(`rotasi${direct}${childName}`)
-                slider
-                .addEventListener("input", function (event) {
-                    tree.findNode(childName).rotation[x] = parseFloat(event.target.value)
-                    tree.root.updateWorldMatrix()
-                    window.requestAnimationFrame(render);
-                });
-            }())
+        let innerChild = tree.findNode(name)
+        let childName = innerChild.name
 
-
-            translateChildSlot.innerHTML += `
-                <br />
-                <label for="translasi${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
-                <input type="range" name="translasi${direction[j]}${child.name}" min="-100" max="100" value="0" id="translasi${direction[j]}${child.name}"
-                    oninput="this.nextElementSibling.value = this.value" />
-                <output>0</output>
-            `
-
-            scaleChildSlot.innerHTML += `
-                <br />
-                <label for="scaling${direction[j]}${child.name}">${direction[j]} ${child.name}:</label>
-                <input type="range" name="scaling${direction[j]}${child.name}" min="0" max="2" value="1" step="0.1" id="scaling${direction[j]}${child.name}"
-                    oninput="this.nextElementSibling.value = this.value" />
-                <output>1</output>
-            `
-
+        for (let j = 0; j < 3; j++) {
+            let direct = direction[j]
+            let rotateSlider = document.createElement('input');
+            rotateSlider.id = `rotasi${direct}${childName}`;
+            rotateSlider.type = 'range';
+            rotateSlider.name = `rotasi${direct}${childName}`;
+            rotateSlider.min = 0;
+            rotateSlider.max = 360;
+            rotateSlider.value = 0;
+            rotateSlider.oninput = function () {
+                console.log("Hello World");
+                this.nextElementSibling.value = this.value;
+                tree.findNode(childName).rotation[j] = parseFloat(this.value)
+                tree.root.updateWorldMatrix()
+                window.requestAnimationFrame(render);
+            }
+            rotateChildSlot.appendChild(document.createElement('br'));
+            rotateChildSlot.appendChild(document.createElement('label')).textContent = `${direct} ${childName}:`;
+            rotateChildSlot.appendChild(rotateSlider);
+            rotateChildSlot.appendChild(document.createElement('output'));
         }
-        for(var i = 0; i < child.children.length; i++){
-            generateInnerHtml(child.children[i].name, rotateChildSlot, translateChildSlot, scaleChildSlot)
+
+        for (let j = 0; j < 3; j++) {
+            let direct = direction[j]
+            let translateSlider = document.createElement('input');
+            translateSlider.id = `translasi${direct}${childName}`;
+            translateSlider.type = 'range';
+            translateSlider.name = `translasi${direct}${childName}`;
+            translateSlider.min = -100;
+            translateSlider.max = 100;
+            translateSlider.value = 0;
+            translateSlider.oninput = function () {
+                this.nextElementSibling.value = this.value;
+                tree.findNode(childName).translation[j] = parseFloat(this.value / 200)
+                tree.root.updateWorldMatrix()
+                window.requestAnimationFrame(render);
+            }
+            translateChildSlot.appendChild(document.createElement('br'));
+            translateChildSlot.appendChild(document.createElement('label')).textContent = `${direct} ${childName}:`;
+            translateChildSlot.appendChild(translateSlider);
+            translateChildSlot.appendChild(document.createElement('output'));
+        }
+
+        for (let j = 0; j < 3; j++) {
+            let direct = direction[j]
+            let scaleSlider = document.createElement('input');
+            scaleSlider.id = `scale${direct}${childName}`;
+            scaleSlider.type = 'range';
+            scaleSlider.name = `translasi${direct}${childName}`;
+            scaleSlider.min = 0;
+            scaleSlider.max = 2;
+            scaleSlider.value = 1;
+            scaleSlider.step = 0.1;
+            scaleSlider.oninput = function () {
+                this.nextElementSibling.value = this.value;
+                tree.findNode(childName).scale[j] = parseFloat(this.value)
+                tree.root.updateWorldMatrix()
+                window.requestAnimationFrame(render);
+            }
+            scaleChildSlot.appendChild(document.createElement('br'));
+            scaleChildSlot.appendChild(document.createElement('label')).textContent = `${direct} ${childName}:`;
+            scaleChildSlot.appendChild(scaleSlider);
+            scaleChildSlot.appendChild(document.createElement('output'));
+        }
+        for (const element of child.children) {
+            generateInnerHtml(element.name, rotateChildSlot, translateChildSlot, scaleChildSlot)
         }
     }
 
@@ -248,7 +277,23 @@ function main() {
     function modelTypeListener() {
         // MODEL TYPE ------------------------------------------------------
         document
-            .getElementById("type-cube")
+            .getElementById("steve")
+            .addEventListener("click", function (event) {
+                renderedmodel = steve;
+                // Load Texture
+                var image = new Image();
+                image.src = document.getElementById("env-text").src;
+                image.onload = function () {
+                    configureTexture(image);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
+                tree = new Tree();
+                tree.createTree(renderedmodel)
+                uiController();
+                window.requestAnimationFrame(render);
+            });
+        document
+            .getElementById("articulated2")
             .addEventListener("click", function (event) {
                 renderedmodel = hierarchy1;
                 // Load Texture
@@ -264,9 +309,9 @@ function main() {
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("type-pyramid")
+            .getElementById("fan")
             .addEventListener("click", function (event) {
-                renderedmodel = hierarchy2;
+                renderedmodel = fan;
                 // Load Texture
                 var image = new Image();
                 image.src = document.getElementById("env-text").src;
@@ -275,14 +320,14 @@ function main() {
                     gl.activeTexture(gl.TEXTURE0);
                 };
                 tree = new Tree();
-                tree.createTree(renderedmodel)
+                tree.createTree(renderedmodel);
                 uiController();
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("type-dodec")
+            .getElementById("sheep")
             .addEventListener("click", function (event) {
-                renderedmodel = dodecahedron;
+                renderedmodel = sheep;
                 // Load Texture
                 var image = new Image();
                 image.src = document.getElementById("env-text").src;
@@ -290,8 +335,9 @@ function main() {
                     configureTexture(image);
                     gl.activeTexture(gl.TEXTURE0);
                 };
-                tree = [];
-                createTree(renderedmodel)
+                tree = new Tree();
+                tree.createTree(renderedmodel);
+                uiController();
                 window.requestAnimationFrame(render);
             });
     }
@@ -447,7 +493,11 @@ function main() {
             document.getElementById("fieldOfView").hidden = true;
             document.getElementById("valuefov").hidden = true;
             window.cancelAnimationFrame(animFrameId);
-            renderedmodel = example;
+            renderedmodel = steve;
+            tree = new Tree();
+            tree.createTree(renderedmodel);
+            uiController();
+
             rotation = [0, 0, 0];
             translation = [0, 0, 0];
             scale = [1, 1, 1];

@@ -13,6 +13,7 @@ export class Node {
         this.localMatrix = identityMatrix();
         this.worldMatrix = identityMatrix();
         this.source = hierarchy.source;
+        this.pivot = hierarchy.pivot;
         this.translation = [0, 0, 0];
         this.rotation = [0, 0, 0];
         this.scale = [1, 1, 1];
@@ -52,17 +53,32 @@ export class Node {
             this.translation[1],
             this.translation[2]
         ).flat();
+
         const nodeRMatVal = rotationMatrices(
             this.rotation[0],
             this.rotation[1],
             this.rotation[2]
         );
 
+        const nodeToCentroidMatVal = translationMatrix(
+            -this.pivot[0],
+            -this.pivot[1],
+            -this.pivot[2]
+        ).flat();
+
+        const nodeFromCentroidMatVal = translationMatrix(
+            this.pivot[0],
+            this.pivot[1],
+            this.pivot[2]
+        ).flat();
+
         const nodeSMatVal = scaleMatrix(this.scale[0], this.scale[1], this.scale[2]).flat();
         this.localMatrix = matrixMultiplication(nodeSMatVal, this.localMatrix);
+        this.localMatrix = matrixMultiplication(nodeToCentroidMatVal, this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeRMatVal[2], this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeRMatVal[1], this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeRMatVal[0], this.localMatrix);
+        this.localMatrix = matrixMultiplication(nodeFromCentroidMatVal, this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeTMatVal, this.localMatrix);
     }
 }
