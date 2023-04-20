@@ -16,6 +16,7 @@ import { hierarchy1, hierarchy2 } from "./object/articulated.js";
 import { steve } from "./object/steve.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
+import { sheep } from "./object/sheep.js";
 
 
 ("use strict");
