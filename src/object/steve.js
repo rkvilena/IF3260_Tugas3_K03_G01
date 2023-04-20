@@ -467,7 +467,7 @@ export const steve = {
             name: "rightarm",
             source: rightarm,
             pivot: [
-                body.centroid[0] + body.dimensions[0] / 2,
+                rightarm.centroid[0],
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
                 0,
             ],
@@ -476,7 +476,7 @@ export const steve = {
             name: "leftarm",
             source: leftarm,
             pivot: [
-                body.centroid[0] - body.dimensions[0] / 2,
+                leftarm.centroid[0],
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
                 0,
             ],
@@ -485,7 +485,7 @@ export const steve = {
             name: "rightleg",
             source: rightleg,
             pivot: [
-                body.centroid[0] + body.dimensions[0] / 2 * 0.5,
+                rightleg.centroid[0],
                 body.centroid[1] - body.dimensions[1] / 2,
                 0,
             ],
@@ -494,7 +494,7 @@ export const steve = {
             name: "leftleg",
             source: leftleg,
             pivot: [
-                body.centroid[0] - body.dimensions[0] / 2 * 0.5,
+                leftleg.centroid[0],
                 body.centroid[1] - body.dimensions[1] / 2,
                 0,
             ],
