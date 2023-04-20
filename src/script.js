@@ -82,10 +82,13 @@ function main() {
 
     // Load Initial Texture
     var image = new Image();
-    image.src = document.getElementById("env-text").src;
+    image.src = "./assets/" + renderedmodel.asset;
+    console.log(image.src);
     image.onload = function () {
-        configureTexture(image);
+        configureTexture(image, renderedmodel.pixelated);
         gl.activeTexture(gl.TEXTURE0);
+        // Draw
+        window.requestAnimationFrame(render);
     };
 
     // Get Attributes
@@ -282,9 +285,10 @@ function main() {
                 renderedmodel = steve;
                 // Load Texture
                 var image = new Image();
-                image.src = document.getElementById("env-text").src;
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
                 image.onload = function () {
-                    configureTexture(image);
+                    configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
                 };
                 tree = new Tree();
@@ -298,9 +302,10 @@ function main() {
                 renderedmodel = hierarchy1;
                 // Load Texture
                 var image = new Image();
-                image.src = document.getElementById("env-text").src;
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
                 image.onload = function () {
-                    configureTexture(image);
+                    configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
                 };
                 tree = new Tree();
@@ -314,9 +319,10 @@ function main() {
                 renderedmodel = fan;
                 // Load Texture
                 var image = new Image();
-                image.src = document.getElementById("env-text").src;
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
                 image.onload = function () {
-                    configureTexture(image);
+                    configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
                 };
                 tree = new Tree();
@@ -330,9 +336,10 @@ function main() {
                 renderedmodel = sheep;
                 // Load Texture
                 var image = new Image();
-                image.src = document.getElementById("env-text").src;
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);;
                 image.onload = function () {
-                    configureTexture(image);
+                    configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
                 };
                 tree = new Tree();
@@ -710,55 +717,7 @@ function main() {
     function drawObject(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        const textCoordArray = [
-            // Front
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Back
-            1, 0,
-            1, 1,
-            0, 1,
-            1, 0,
-            1, 1,
-            0, 0,
-    
-            // Left
-            1, 0,
-            1, 1,
-            0, 1,
-            1, 0,
-            1, 1,
-            0, 0,
-    
-            // Right
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Top
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Down
-            1, 0,
-            0, 0,
-            0, 1,
-            0, 0,
-            0, 1,
-            1, 1,
-        ];
+        const textCoordArray = node.source.texcoords;
         setupDraw(positions, colorarray, textCoordArray)
 
         // Compute Matrix
@@ -776,56 +735,8 @@ function main() {
     function drawObjectAnim(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        const textCoordArray = [
-            // Front
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Back
-            1, 0,
-            1, 1,
-            0, 1,
-            1, 0,
-            1, 1,
-            0, 0,
-    
-            // Left
-            1, 0,
-            1, 1,
-            0, 1,
-            1, 0,
-            1, 1,
-            0, 0,
-    
-            // Right
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Top
-            0, 0,
-            1, 0,
-            1, 1,
-            0, 0,
-            1, 1,
-            0, 1,
-    
-            // Down
-            1, 0,
-            0, 0,
-            0, 1,
-            0, 0,
-            0, 1,
-            1, 1,
-        ];
-        setupDraw(positions, colorarray, textCoordArray)
+        const textCoordArray = node.source.texcoords;
+        setupDraw(positions, colorarray, textCoordArray);
 
         // Compute Matrix
         let finalMatrix = transformMatrix();
@@ -878,10 +789,16 @@ function main() {
         render()
         animFrameId = window.requestAnimationFrame(animrender);
     }
-    function configureTexture( path ) {
+    function configureTexture( image, pixelated ) {
         var texture = gl.createTexture();
         gl.bindTexture( gl.TEXTURE_2D, texture );
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        if (pixelated) {
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        }
         gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image );
         gl.generateMipmap( gl.TEXTURE_2D );
         gl.uniform1i(textureLocation, 0);

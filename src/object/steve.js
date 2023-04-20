@@ -86,6 +86,15 @@ export const body = {
         }
         return positions;
     },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
+    },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
         var min = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -192,6 +201,15 @@ export const head = {
             positions.push(this.vertices[this.indices[i] * 3 + 2]);
         }
         return positions;
+    },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
     },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -300,6 +318,15 @@ export const rightarm = {
         }
         return positions;
     },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
+    },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
         var min = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -406,6 +433,15 @@ export const leftarm = {
             positions.push(this.vertices[this.indices[i] * 3 + 2]);
         }
         return positions;
+    },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
     },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -514,6 +550,15 @@ export const rightleg = {
         }
         return positions;
     },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
+    },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
         var min = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -621,6 +666,15 @@ export const leftleg = {
         }
         return positions;
     },
+    get texcoords() {
+        var texcoords = [];
+        for (var i = 0; i < this.tex_indices.length; i++) {
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
+            texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
+        }
+        console.log(texcoords);
+        return texcoords;
+    },
     get dimensions() {
         var max = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
         var min = [this.vertices[this.indices[0] * 3], this.vertices[this.indices[0] * 3 + 1], this.vertices[this.indices[0] * 3 + 2]];
@@ -643,6 +697,7 @@ export const leftleg = {
 export const steve = {
     class: "steve",
     asset: "steve.png",
+    pixelated: true,
     name: "body",
     source: body,
     pivot: body.centroid,
