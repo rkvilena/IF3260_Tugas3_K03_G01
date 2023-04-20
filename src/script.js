@@ -137,7 +137,6 @@ function main() {
     loadListener();
     readerAnimationListener(readerAnim);
     loadAnimationListener();
-    animationListener();
 
     // Draw
     window.requestAnimationFrame(render);
@@ -231,18 +230,6 @@ function main() {
         for (const element of child.children) {
             generateInnerHtml(element.name, rotateChildSlot, translateChildSlot, scaleChildSlot)
         }
-    }
-
-    function animationListener() {
-        document.getElementById("animation")
-            .addEventListener("click", function (event) {
-                if (event.target.checked) {
-                    window.requestAnimationFrame(animrender);
-                } else {
-                    window.cancelAnimationFrame(animFrameId);
-                    window.requestAnimationFrame(render);
-                }
-            });
     }
 
     function projectionListener() {
