@@ -17,11 +17,12 @@ import { sheep } from "./object/sheep.js";
 import { fan } from "./object/fan.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
+import { giraffe } from "./object/giraffe.js";
 
 ("use strict");
 
 // Hardcoded values----------------------------------------------
-let renderedmodel = steve;
+let renderedmodel = giraffe;
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];
