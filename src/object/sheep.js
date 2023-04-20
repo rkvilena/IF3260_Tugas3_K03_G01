@@ -595,10 +595,10 @@ const body = {
 
 
 export const sheep = {
-  calss : "sheep",
-  name: "body",
+  class : "sheep",
   asset : "normal.jpg",
-  pixelated : true,
+  pixelated : false,
+  name: "body",
   source: body,
   pivot: body.centroid,
   children : [
