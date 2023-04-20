@@ -52,6 +52,7 @@ function main() {
     // Programs
     var shaderProgramRaw = webglShaderProgram(gl, "vs", "fs");
     var shaderProgramShading = webglShaderProgram(gl, "vss", "fss");
+    var shaderProgramTexture = webglShaderProgram(gl, "vst", "fst");
 
     if (!shaderProgramRaw) {
         console.error("Default program failed to compile");
@@ -61,25 +62,36 @@ function main() {
         console.error("Shading program failed to compile");
         return;
     }
+    if (!shaderProgramTexture) {
+        console.error("Shading program failed to compile");
+        return;
+    }
 
     // Globals to indicate type of program and attributes/uniforms
-    var program, positionLocation, transformLocation, colorLocation;
+    var program, positionLocation, transformLocation, colorLocation, textCoordLocation, textureLocation;
 
     // Create Buffers
     var positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     var colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    var textCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
 
     // Get Attributes
     const position = gl.getAttribLocation(shaderProgramRaw, "a_position");
     const color = gl.getAttribLocation(shaderProgramRaw, "a_color");
     const position_s = gl.getAttribLocation(shaderProgramShading, "a_position");
     const color_s = gl.getAttribLocation(shaderProgramShading, "a_color");
+    const position_t = gl.getAttribLocation(shaderProgramTexture, "a_position");
+    const color_t = gl.getAttribLocation(shaderProgramTexture, "a_color");
+    const textCoord = gl.getAttribLocation(shaderProgramTexture, "a_textcoord");
 
     // Get Tranform
     const transform = gl.getUniformLocation(shaderProgramRaw, "u_matrix");
     const transform_s = gl.getUniformLocation(shaderProgramShading, "u_matrix");
+    const transform_t = gl.getUniformLocation(shaderProgramTexture, "u_matrix");
+    const textureLoc = gl.getUniformLocation(shaderProgramTexture, "u_texture");
 
     // Set up page component
     document.getElementById("shearX").hidden = true;
@@ -584,7 +596,7 @@ function main() {
     }
 
     // Render configuration
-    function setupDraw(positions, colorarray){
+    function setupDraw(positions, colorarray, textCoordArray){
         gl.enableVertexAttribArray(positionLocation);
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         gl.bufferData(
@@ -603,13 +615,71 @@ function main() {
             gl.STATIC_DRAW
         );
         gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+
+        //Texture
+        gl.enableVertexAttribArray(textCoordLocation);
+        gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Uint8Array(textCoordArray),
+            gl.STATIC_DRAW
+        );
+        gl.vertexAttribPointer(textCoordLocation, 2, gl.FLOAT, false, 0, 0);
     }
 
     // Draw component buffer (current object)
     function drawObject(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        setupDraw(positions, colorarray)
+        const textCoordArray = new Float32Array([
+            // Front
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Back
+            1, 0,
+            1, 1,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+    
+            // Left
+            1, 0,
+            1, 1,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+    
+            // Right
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Top
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Down
+            1, 0,
+            0, 0,
+            0, 1,
+            0, 0,
+            0, 1,
+            1, 1,])
+        setupDraw(positions, colorarray, textCoordArray)
 
         // Compute Matrix
         let finalMatrix = transformMatrix();
@@ -626,7 +696,55 @@ function main() {
     function drawObjectAnim(node) {
         const positions = node.source.positions;
         const colorarray = node.source.colorarray;
-        setupDraw(positions, colorarray)
+        const textCoordArray = new Float32Array([
+            // Front
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Back
+            1, 0,
+            1, 1,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+    
+            // Left
+            1, 0,
+            1, 1,
+            0, 1,
+            1, 0,
+            1, 1,
+            0, 0,
+    
+            // Right
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Top
+            0, 0,
+            1, 0,
+            1, 1,
+            0, 0,
+            1, 1,
+            0, 1,
+    
+            // Down
+            1, 0,
+            0, 0,
+            0, 1,
+            0, 0,
+            0, 1,
+            1, 1,])
+        setupDraw(positions, colorarray, textCoordArray)
 
         // Compute Matrix
         let finalMatrix = transformMatrix();
@@ -649,10 +767,12 @@ function main() {
             transformLocation = transform_s;
             colorLocation = color_s;
         } else { // don't implement
-            program = shaderProgramRaw;
-            positionLocation = position;
-            transformLocation = transform;
-            colorLocation = color;
+            program = shaderProgramTexture;
+            positionLocation = position_t;
+            transformLocation = transform_t;
+            colorLocation = color_t;
+            textureLocation = textureLoc;
+            textCoordLocation = textCoord;
         }
         resizeCanvasToDisplaySize(gl.canvas);
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -670,11 +790,26 @@ function main() {
         // tree[2].localMatrix = matrixMultiplication(animrotateMatVal[1], tree[2].localMatrix)
         // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
         // tree[0].updateWorldMatrix()
+        var image = document.getElementById("moon-text");
+        configureTexture(image);
         drawObjects(tree.root)
     }
     function animrender() {
         render()
         animFrameId = window.requestAnimationFrame(animrender);
+    }
+    function configureTexture( image ) {
+        var texture = gl.createTexture();
+        gl.bindTexture( gl.TEXTURE_2D, texture );
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGB,
+             gl.RGB, gl.UNSIGNED_BYTE, image );
+        gl.generateMipmap( gl.TEXTURE_2D );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
+                          gl.NEAREST_MIPMAP_LINEAR );
+        gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+    
+        gl.uniform1i(textureLocation, 0);
     }
 }
 

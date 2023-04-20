@@ -71,6 +71,42 @@
                 gl_FragColor = vec4(v_color * (1.0 - shadeFactor),1.0);
             }
         </script>
+    
+    <script id="vst" type="x-shader/x-vertex">
+            attribute vec4 a_position;
+            attribute vec3 a_color;
+            attribute vec2 a_textcoord;
+
+            uniform mat4 u_matrix;
+
+            varying vec4 v_color;
+            varying vec2 v_texcoord;
+
+            void main() {
+              // Multiply the position by the matrix.
+                gl_Position = u_matrix * a_position;
+
+              // Pass the color to the fragment shader.
+                v_color = vec4(a_color, 1.0);
+                v_texcoord = a_textcoord;
+
+            }
+        </script>
+
+    <script id="fst" type="x-shader/x-fragment">
+            precision mediump float;
+
+            // Passed in from the vertex shader.
+            varying vec2 v_texcoord;
+            varying vec4 v_color;
+            
+            // The texture.
+            uniform sampler2D u_texture;
+            
+            void main() {
+                gl_FragColor = texture2D(u_texture, v_texcoord);
+            }
+        </script>
 
     <script src="script.js" type="module" defer></script>
 </head>
@@ -273,6 +309,8 @@
             <li>Gunakan tombol <i>reset</i> untuk mengulang kondisi model menjadi keadaan semula</li><br>
         </ul>
     </div>
+    <img id="bump-text" src="./assets/normal.jpg" alt="" hidden>
+    <img id="moon-text" src="./assets/moon.jpg" alt="" hidden>
 </body>
 
 </html>
