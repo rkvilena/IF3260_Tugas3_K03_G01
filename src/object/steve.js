@@ -92,7 +92,7 @@ export const body = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -208,7 +208,7 @@ export const head = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -324,7 +324,7 @@ export const rightarm = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -440,7 +440,7 @@ export const leftarm = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -556,7 +556,7 @@ export const rightleg = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {
@@ -672,7 +672,7 @@ export const leftleg = {
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2]);
             texcoords.push(this.tex_coords[this.tex_indices[i] * 2 + 1]);
         }
-        console.log(texcoords);
+        // console.log(texcoords);
         return texcoords;
     },
     get dimensions() {

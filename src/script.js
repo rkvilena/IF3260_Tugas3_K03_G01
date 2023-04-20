@@ -97,6 +97,7 @@ function main() {
     const color = gl.getAttribLocation(shaderProgramRaw, "a_color");
     const position_s = gl.getAttribLocation(shaderProgramShading, "a_position");
     const color_s = gl.getAttribLocation(shaderProgramShading, "a_color");
+    const textCoord_s = gl.getAttribLocation(shaderProgramShading, "a_textcoord");
     const position_t = gl.getAttribLocation(shaderProgramTexture, "a_position");
     const color_t = gl.getAttribLocation(shaderProgramTexture, "a_color");
     const textCoord = gl.getAttribLocation(shaderProgramTexture, "a_textcoord");
@@ -104,6 +105,7 @@ function main() {
     // Get Tranform
     const transform = gl.getUniformLocation(shaderProgramRaw, "u_matrix");
     const transform_s = gl.getUniformLocation(shaderProgramShading, "u_matrix");
+    const textureLoc_s = gl.getUniformLocation(shaderProgramShading, "u_texture");
     const transform_t = gl.getUniformLocation(shaderProgramTexture, "u_matrix");
     const textureLoc = gl.getUniformLocation(shaderProgramTexture, "u_texture");
 
@@ -762,6 +764,8 @@ function main() {
             positionLocation = position_s;
             transformLocation = transform_s;
             colorLocation = color_s;
+            textureLocation = textureLoc_s;
+            textCoordLocation = textCoord_s;
         } else { // don't implement
             program = shaderProgramTexture;
             positionLocation = position_t;

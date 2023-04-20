@@ -42,10 +42,12 @@
     <script id="vss" type="x-shader/x-vertex">
             attribute vec4 a_position;
             attribute vec3 a_color;
+            attribute vec2 a_textcoord;
 
             uniform mat4 u_matrix;
 
             varying vec3 v_color;
+            varying vec2 v_texcoord;
             varying float shadeFactor;
 
             void main() {
@@ -54,7 +56,8 @@
               vec4 finalMatrix = u_matrix * a_position;
 
               // Pass the color to the fragment shader.
-              v_color = a_color;
+                v_color = a_color;
+                v_texcoord = a_textcoord;
 
               // Pass shade factor to the fragment shader.
               shadeFactor = finalMatrix.z * 2.0;
@@ -65,10 +68,14 @@
             precision mediump float;
 
             varying float shadeFactor;
+            varying vec2 v_texcoord;
             varying vec3 v_color;
+            
+            // The texture.
+            uniform sampler2D u_texture;
 
             void main(){
-                gl_FragColor = vec4(v_color * (1.0 - shadeFactor),1.0);
+                gl_FragColor = vec4( (1.0 - shadeFactor), (1.0 - shadeFactor), (1.0 - shadeFactor),1.0) * texture2D(u_texture, v_texcoord);
             }
         </script>
     
