@@ -53,6 +53,7 @@ export class Node {
             this.translation[1],
             this.translation[2]
         ).flat();
+
         const nodeRMatVal = rotationMatrices(
             this.rotation[0],
             this.rotation[1],
