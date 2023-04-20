@@ -31,6 +31,7 @@ let height = 0.0;
 let radius = 1.0;
 let camRotation = 0;
 let shading = false;
+let colors = false;
 let animFrameId;
 let tree = new Tree();
 const direction = ["X", "Y", "Z"];
@@ -692,25 +693,28 @@ function main() {
         );
         gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
-        // Colors
-        gl.enableVertexAttribArray(colorLocation);
-        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-        gl.bufferData(
-            gl.ARRAY_BUFFER,
-            new Uint8Array(colorarray),
-            gl.STATIC_DRAW
-        );
-        gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+        if (colors) {
+            // Colors
+            gl.enableVertexAttribArray(colorLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Uint8Array(colorarray),
+                gl.STATIC_DRAW
+            );
+            gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0);
 
-        // Texture
-        gl.enableVertexAttribArray(textCoordLocation);
-        gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
-        gl.bufferData(
-            gl.ARRAY_BUFFER,
-            new Float32Array(textCoordArray),
-            gl.STATIC_DRAW
-        );
-        gl.vertexAttribPointer(textCoordLocation, 2, gl.FLOAT, false, 0, 0);
+        } else {
+            // Texture
+            gl.enableVertexAttribArray(textCoordLocation);
+            gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array(textCoordArray),
+                gl.STATIC_DRAW
+            );
+            gl.vertexAttribPointer(textCoordLocation, 2, gl.FLOAT, false, 0, 0);
+        }
     }
 
     // Draw component buffer (current object)
