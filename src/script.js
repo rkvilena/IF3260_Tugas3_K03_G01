@@ -13,6 +13,7 @@ import {
 } from "./math.js";
 import { cube, dodecahedron, pyramid } from "./object/models.js";
 import { hierarchy1, hierarchy2 } from "./object/articulated.js";
+import { steve } from "./object/steve.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
 
@@ -249,9 +250,10 @@ function main() {
         document
             .getElementById("type-dodec")
             .addEventListener("click", function (event) {
-                renderedmodel = dodecahedron;
-                tree = [];
-                createTree(renderedmodel)
+                renderedmodel = steve;
+                tree = new Tree();
+                tree.createTree(renderedmodel);
+                uiController();
                 window.requestAnimationFrame(render);
             });
     }
