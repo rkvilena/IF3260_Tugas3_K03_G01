@@ -41,10 +41,12 @@
         <script id="vss" type="x-shader/x-vertex">
             attribute vec4 a_position;
             attribute vec3 a_color;
+            attribute vec2 a_textcoord;
 
             uniform mat4 u_matrix;
 
             varying vec3 v_color;
+            varying vec2 v_texcoord;
             varying float shadeFactor;
 
             void main() {
@@ -53,7 +55,8 @@
               vec4 finalMatrix = u_matrix * a_position;
 
               // Pass the color to the fragment shader.
-              v_color = a_color;
+                v_color = a_color;
+                v_texcoord = a_textcoord;
 
               // Pass shade factor to the fragment shader.
               shadeFactor = finalMatrix.z * 2.0;
@@ -64,10 +67,14 @@
             precision mediump float;
 
             varying float shadeFactor;
+            varying vec2 v_texcoord;
             varying vec3 v_color;
+            
+            // The texture.
+            uniform sampler2D u_texture;
 
             void main(){
-                gl_FragColor = vec4(v_color * (1.0 - shadeFactor),1.0);
+                gl_FragColor = vec4( (1.0 - shadeFactor), (1.0 - shadeFactor), (1.0 - shadeFactor),1.0) * texture2D(u_texture, v_texcoord);
             }
         </script>
 
@@ -333,61 +340,7 @@
                         <div id="rotation-for-child"></div>
                     </div>
                     <br />
-                    <div>
-                        <h3>TRANSLASI</h3>
-                        <label for="translasiX">X:</label>
-                        <input
-                            type="range"
-                            name="translasiX"
-                            min="-100"
-                            max="100"
-                            value="0"
-                            id="translasiX"
-                            oninput="this.nextElementSibling.value = this.value"
-                        />
-                        <output>0</output>
-
-                        <br />
-                        <label for="translasiY">Y:</label>
-                        <input
-                            type="range"
-                            name="translasiY"
-                            min="-100"
-                            max="100"
-                            value="0"
-                            id="translasiY"
-                            oninput="this.nextElementSibling.value = this.value"
-                        />
-                        <output>0</output>
-
-                        <br />
-                        <label for="translasiYcube">Y Cube:</label>
-                        <input
-                            type="range"
-                            name="translasiYcube"
-                            min="-100"
-                            max="100"
-                            value="0"
-                            id="translasiYcube"
-                            oninput="this.nextElementSibling.value = this.value"
-                        />
-                        <output>0</output>
-
-                        <br />
-                        <label for="translasiZ">Z:</label>
-                        <input
-                            type="range"
-                            name="translasiZ"
-                            min="-1000"
-                            max="1000"
-                            value="0"
-                            id="translasiZ"
-                            oninput="this.nextElementSibling.value = this.value"
-                        />
-                        <output>0</output>
-
-                        <div id="translation-for-child"></div>
-                    </div>
+                    <input id="giraffe" type="radio" name="bentuk" value="giraffe" />Giraffe
                     <br />
                     <div>
                         <h3>SCALING</h3>
@@ -513,9 +466,124 @@
                     </div>
                 </div>
             </div>
-        </form>
-        <img id="bump-text" src="./assets/normal.jpg" alt="" hidden />
-        <img id="moon-text" src="./assets/moon.jpg" alt="" hidden />
-        <img id="env-text" src="./assets/enviroment.jpg" alt="" hidden />
-    </body>
+            <div>
+                <div class="slider-container">
+                    <div>
+                        <h3>ROTASI</h3>
+                        <label for="rotasiX">X:</label>
+                        <input type="range" name="rotasiX" min="0" max="360" value="0" id="rotasiX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="rotasiY">Y:</label>
+                        <input type="range" name="rotasiY" min="0" max="360" value="0" id="rotasiY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="rotasiZ">Z:</label>
+                        <input type="range" name="rotasiZ" min="0" max="360" value="0" id="rotasiZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <div id="rotation-for-child">
+    
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <h3>TRANSLASI</h3>
+                        <label for="translasiX">X:</label>
+                        <input type="range" name="translasiX" min="-100" max="100" value="0" id="translasiX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="translasiY">Y:</label>
+                        <input type="range" name="translasiY" min="-100" max="100" value="0" id="translasiY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <br />
+                        <label for="translasiZ">Z:</label>
+                        <input type="range" name="translasiZ" min="-1000" max="1000" value="0" id="translasiZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>0</output>
+    
+                        <div id="translation-for-child">
+    
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <h3>SCALING</h3>
+                        <label for="scalingX">X:</label>
+                        <input type="range" name="scalingX" min="0" max="2" value="1" step="0.1" id="scalingX"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <br />
+                        <label for="scalingY">Y:</label>
+                        <input type="range" name="scalingY" min="0" max="2" value="1" step="0.1" id="scalingY"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <br />
+                        <label for="scalingZ">Z:</label>
+                        <input type="range" name="scalingZ" min="0" max="2" value="1" step="0.1" id="scalingZ"
+                            oninput="this.nextElementSibling.value = this.value" />
+                        <output>1</output>
+    
+                        <div id="scale-for-child">
+    
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <div>
+                    <input type="reset" id="reset" name="reset" value="Reset" />
+                </div>
+                <br />
+            </div>
+        </div>
+    </form>
+    <div>
+        <h3>LOAD & SAVE</h3>
+        <input id="load" type="file" name="loadmodel" /> <br><br>
+        <button id="save" name="savemodel">Save</button>
+    </div>
+    </div>
+    </div>
+    <div id="help">
+        <img src="icons8-info-squared-100.png" alt="help" height="50%" width="50%" />
+    </div>
+    <div id="helpMenu">
+        <h3>Help / Cara Menggunakan</h3>
+        <ul>
+            <li>Lakukan pengaturan <i>radius</i>, <i>height</i>, dan <i>rotation</i> untuk mengatur setelan kamerapada
+                bagian <b>KAMERA</b></li><br>
+            <li>Terdapat 3 model bawaan yang dapat dipilih, yaitu Kubus, Piramid, dan Dodecahedron pada bagian <b>JENIS
+                    BENTUK</b></li>
+            <ul>
+                <li>Anda dapat menggunakan model kustom / hasil penyimpanan dengan memilih file pada bagian <b>LOAD &
+                        SAVE</b></li>
+                <li>Simpan model hasil transformasi dengan klik tombol <i>save</i></li>
+            </ul><br>
+            <li>Terdapat 3 tipe proyeksi yang dapat dipilih, yaitu <i>orthographic</i>, <i>oblique</i>, dan
+                <i>perspective</i> pada bagian <b>JENIS PROYEKSI</b>
+            </li><br>
+            <li>Lakukan tranformasi (translasi, rotasi, skala/scale) pada model dengan mengatur nilai X, Y, dan Z
+                menggunakan slider</li><br>
+            <li>Anda dapat menerapkan <i>shading</i> dan <i>animation</i> dengan mencentang <i>checkbox</i> pada bagian
+                <b>SHADING & ANIMATION</b>
+            </li><br>
+            <li>Gunakan tombol <i>reset</i> untuk mengulang kondisi model menjadi keadaan semula</li><br>
+        </ul>
+    </div>
+    <img id="bump-text" src="./assets/normal.jpg" alt="" hidden>
+    <img id="moon-text" src="./assets/moon.jpg" alt="" hidden>
+    <img id="env-text" src="./assets/enviroment.jpg" alt="" hidden>
+</body>
+
 </html>

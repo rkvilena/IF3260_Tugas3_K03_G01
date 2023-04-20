@@ -12,8 +12,9 @@ import {
 } from "./math.js";
 import { hierarchy1 } from "./object/articulated.js"
 import { steve } from "./object/steve.js";
-import { sheep } from "./object/sheep.js";
+import { giraffe } from "./object/giraffe.js";
 import { fan } from "./object/fan.js";
+import { sheep } from "./object/sheep.js";
 import { save, saveAnimation } from "./save.js";
 import { Tree } from "./tree.js"
 
@@ -100,6 +101,7 @@ function main() {
     const color = gl.getAttribLocation(shaderProgramRaw, "a_color");
     const position_s = gl.getAttribLocation(shaderProgramShading, "a_position");
     const color_s = gl.getAttribLocation(shaderProgramShading, "a_color");
+    const textCoord_s = gl.getAttribLocation(shaderProgramShading, "a_textcoord");
     const position_t = gl.getAttribLocation(shaderProgramTexture, "a_position");
     const color_t = gl.getAttribLocation(shaderProgramTexture, "a_color");
     const textCoord = gl.getAttribLocation(shaderProgramTexture, "a_textcoord");
@@ -107,6 +109,7 @@ function main() {
     // Get Tranform
     const transform = gl.getUniformLocation(shaderProgramRaw, "u_matrix");
     const transform_s = gl.getUniformLocation(shaderProgramShading, "u_matrix");
+    const textureLoc_s = gl.getUniformLocation(shaderProgramShading, "u_texture");
     const transform_t = gl.getUniformLocation(shaderProgramTexture, "u_matrix");
     const textureLoc = gl.getUniformLocation(shaderProgramTexture, "u_texture");
 
@@ -122,7 +125,7 @@ function main() {
     const readerAnim = new FileReader();
     projectionListener();
     modelTypeListener();
-    uiController()
+    uiController();
     sliderListener();
     resetButton();
     shadingListener();
@@ -157,8 +160,7 @@ function main() {
         if (!child)
             return ""
 
-        let innerChild = tree.findNode(name)
-        let childName = innerChild.name
+        let childName = child.name
 
         for (let j = 0; j < 3; j++) {
             let direct = direction[j]
@@ -170,7 +172,6 @@ function main() {
             rotateSlider.max = 360;
             rotateSlider.value = 0;
             rotateSlider.oninput = function () {
-                console.log("Hello World");
                 this.nextElementSibling.value = this.value;
                 tree.findNode(childName).rotation[j] = parseFloat(this.value)
                 tree.root.updateWorldMatrix()
@@ -304,9 +305,9 @@ function main() {
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("articulated2")
+            .getElementById("giraffe")
             .addEventListener("click", function (event) {
-                renderedmodel = hierarchy1;
+                renderedmodel = giraffe;
                 // Load Texture
                 var image = new Image();
                 image.src = "./assets/" + renderedmodel.asset;
@@ -344,7 +345,7 @@ function main() {
                 // Load Texture
                 var image = new Image();
                 image.src = "./assets/" + renderedmodel.asset;
-                console.log(image.src);;
+                console.log(image.src);
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
@@ -411,16 +412,6 @@ function main() {
                 translation[1] = parseFloat(event.target.value / 200);
                 window.requestAnimationFrame(render);
             });
-        /* CHILD NODE Y TRANSLATION EXAMPLE */
-        document
-            .getElementById("translasiYcube")
-            .addEventListener("input", function (event) {
-                tree.findNode("child1").translation[1] = parseFloat(event.target.value / 50)
-                console.log(tree.findNode("child1").translation[1])
-                tree.root.updateWorldMatrix()
-
-                window.requestAnimationFrame(render);
-            });
         document
             .getElementById("translasiZ")
             .addEventListener("input", function (event) {
@@ -447,30 +438,12 @@ function main() {
                 rotation[2] = parseFloat(event.target.value);
                 window.requestAnimationFrame(render);
             });
-        
-        /* CHILD NODE Z ROTATION EXAMPLE */
-        // document
-        //     .getElementById("rotasiZcube")
-        //     .addEventListener("input", function (event) {
-        //         tree.findNode("child1").rotation[2] = parseFloat(event.target.value)
-        //         tree.root.updateWorldMatrix()
-        //         window.requestAnimationFrame(render);
-        //     });
 
         //SCALE Slider --------------------------------------------------------
         document
             .getElementById("scalingX")
             .addEventListener("input", function (event) {
                 scale[0] = parseFloat(event.target.value);
-                window.requestAnimationFrame(render);
-            });
-        /* CHILD NODE X SCALING EXAMPLE */
-        document
-            .getElementById("scalingXcube")
-            .addEventListener("input", function (event) {
-                tree.findNode("child1").scale[0] = parseFloat(event.target.value)
-                tree.root.updateWorldMatrix()
-
                 window.requestAnimationFrame(render);
             });
         document
@@ -508,6 +481,13 @@ function main() {
             document.getElementById("valuefov").hidden = true;
             window.cancelAnimationFrame(animFrameId);
             renderedmodel = steve;
+            var image = new Image();
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
+                image.onload = function () {
+                    configureTexture(image, renderedmodel.pixelated);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
             tree = new Tree();
             tree.createTree(renderedmodel);
             uiController();
@@ -551,10 +531,17 @@ function main() {
         reader.onload = null;
         reader.addEventListener("load", function (event) {
             renderedmodel = JSON.parse(event.target.result);
+            var image = new Image();
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
+                image.onload = function () {
+                    configureTexture(image, renderedmodel.pixelated);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
             tree = null;
             tree = new Tree();
             tree.createTree(renderedmodel)
-            console.log(tree)
+            uiController();
             tree.root.updateWorldMatrix()
             window.requestAnimationFrame(render);
         });
@@ -567,7 +554,7 @@ function main() {
                 const file = event.target.files[0];
                 reader.readAsText(file);
                 readerListener(reader);
-                document.getElementById("type-custom").checked = true;
+                document.getElementById("articulated-custom").checked = true;
                 event.target.value = "";
             },
             false
@@ -1001,6 +988,8 @@ function main() {
             positionLocation = position_s;
             transformLocation = transform_s;
             colorLocation = color_s;
+            textureLocation = textureLoc_s;
+            textCoordLocation = textCoord_s;
         } else { // don't implement
             program = shaderProgramTexture;
             positionLocation = position_t;
