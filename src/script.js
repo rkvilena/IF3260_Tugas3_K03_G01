@@ -117,7 +117,6 @@ function main() {
     document.getElementById("valuesy").hidden = true;
     document.getElementById("fieldOfView").hidden = true;
     document.getElementById("valuefov").hidden = true;
-    document.getElementById("articulated-custom").enable = false;
     const reader = new FileReader();
     projectionListener();
     modelTypeListener();
@@ -349,6 +348,23 @@ function main() {
                 uiController();
                 window.requestAnimationFrame(render);
             });
+        document
+            .getElementById("articulated-custom")
+            .addEventListener("click", function (event) {
+                
+                // Load Texture
+                var image = new Image();
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
+                image.onload = function () {
+                    configureTexture(image, renderedmodel.pixelated);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
+                tree = new Tree();
+                tree.createTree(renderedmodel);
+                uiController();
+                window.requestAnimationFrame(render);
+            });
     }
 
     function sliderListener() {
@@ -526,17 +542,18 @@ function main() {
         reader.addEventListener("load", function (event) {
             renderedmodel = JSON.parse(event.target.result);
             var image = new Image();
-                image.src = "./assets/" + renderedmodel.asset;
-                console.log(image.src);
-                image.onload = function () {
-                    configureTexture(image, renderedmodel.pixelated);
-                    gl.activeTexture(gl.TEXTURE0);
-                };
+            image.src = "./assets/" + renderedmodel.asset;
+            console.log(image.src);
+            image.onload = function () {
+                configureTexture(image, renderedmodel.pixelated);
+                gl.activeTexture(gl.TEXTURE0);
+            };
             tree = null;
             tree = new Tree();
             tree.createTree(renderedmodel)
             uiController();
             tree.root.updateWorldMatrix()
+            window.requestAnimationFrame(render);
             window.requestAnimationFrame(render);
         });
     }
