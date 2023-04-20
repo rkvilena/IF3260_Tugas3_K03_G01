@@ -120,9 +120,9 @@ export const orthographicMatrix = (right, bottom, near, far) => {
   // Always assumes left = -right, top = -bottom
   return [
     1 / right, 0, 0, 0,
-    0, 1 / -bottom, 0, 0,
-    0, 0, 2 / (near - far), 0,
-    0, 0, (near + far) / (near - far), 1,
+    0, 1 / bottom, 0, 0,
+    0, 0, -2 / (far - near), -(far + near) / (far - near),
+    0, 0, 0, 1,
   ];
 }
 
