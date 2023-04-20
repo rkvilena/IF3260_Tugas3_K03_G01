@@ -790,10 +790,14 @@ function main() {
         // tree[2].localMatrix = matrixMultiplication(animrotateMatVal[1], tree[2].localMatrix)
         // // pyramidnode.localMatrix = matrixMultiplication(animrotateMatVal[2], pyramidnode.localMatrix)
         // tree[0].updateWorldMatrix()
-        var image = document.getElementById("env-text");
-        configureTexture(image);
-        gl.activeTexture(gl.TEXTURE0);
-        
+
+        var image = new Image();
+        image.onload = function () {
+            configureTexture(image);
+            gl.activeTexture(gl.TEXTURE0);
+        };
+        image.src = document.getElementById("env-text").src;
+
         drawObjects(tree.root)
     }
     function animrender() {
