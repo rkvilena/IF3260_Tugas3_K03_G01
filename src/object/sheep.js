@@ -597,6 +597,8 @@ const body = {
 export const sheep = {
   calss : "sheep",
   name: "body",
+  asset : "normal.jpg",
+  pixelated : true,
   source: body,
   pivot: body.centroid,
   children : [
