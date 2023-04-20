@@ -161,9 +161,26 @@ export const head = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
-export const leftarm = {
+export const rightarm = {
     indices: [
         18, 17, 16,
         18, 19, 17,
@@ -209,9 +226,26 @@ export const leftarm = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
-export const rightarm = {
+export const leftarm = {
     indices: [
         26, 25, 24,
         26, 27, 25,
@@ -257,9 +291,26 @@ export const rightarm = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
-export const leftleg = {
+export const rightleg = {
     indices: [
         34, 33, 32,
         34, 35, 33,
@@ -305,9 +356,26 @@ export const leftleg = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
-export const rightleg = {
+export const leftleg = {
     indices: [
         42, 41, 40,
         42, 43, 41,
@@ -353,6 +421,23 @@ export const rightleg = {
         }
         return positions;
     },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
 };
 
 export const steve = {
@@ -370,8 +455,8 @@ export const steve = {
             ],
         },
         {
-            name: "leftarm",
-            source: leftarm,
+            name: "rightarm",
+            source: rightarm,
             pivot: [
                 body.centroid[0] + body.dimensions[0] / 2,
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
@@ -379,8 +464,8 @@ export const steve = {
             ],
         },
         {
-            name: "rightarm",
-            source: rightarm,
+            name: "leftarm",
+            source: leftarm,
             pivot: [
                 body.centroid[0] - body.dimensions[0] / 2,
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
@@ -388,8 +473,8 @@ export const steve = {
             ],
         },
         {
-            name: "leftleg",
-            source: leftleg,
+            name: "rightleg",
+            source: rightleg,
             pivot: [
                 body.centroid[0] + body.dimensions[0] / 2 * 0.5,
                 body.centroid[1] - body.dimensions[1] / 2,
@@ -397,8 +482,8 @@ export const steve = {
             ],
         },
         {
-            name: "rightleg",
-            source: rightleg,
+            name: "leftleg",
+            source: leftleg,
             pivot: [
                 body.centroid[0] - body.dimensions[0] / 2 * 0.5,
                 body.centroid[1] - body.dimensions[1] / 2,
