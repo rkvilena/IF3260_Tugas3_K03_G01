@@ -37,6 +37,10 @@ canvas {
   color: #ffffff;
 }
 
+.hidden {
+  display: none;
+}
+
 #help {
   position: absolute;
   bottom: 2em;

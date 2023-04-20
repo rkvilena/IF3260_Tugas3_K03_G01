@@ -15,6 +15,16 @@ export function save(tree, translation, rotation, scale) {
     link.click();
 }
 
+export function saveAnimation(animation, clz) {
+    const jsonString = JSON.stringify(animation, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "animation_" + clz + ".json";
+    link.href = url;
+    link.click();
+}
+
 function saveNodeToHierarchy(node, worldViewMat) {
     let hierarchynode = {
         name: node.name,

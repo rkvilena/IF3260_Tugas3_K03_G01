@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Grafkom 2</title>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Grafkom 2</title>
-
-    <!-- vertex shader -->
-    <script id="vs" type="x-shader/x-vertex">
+        <!-- vertex shader -->
+        <script id="vs" type="x-shader/x-vertex">
             attribute vec4 a_position;
             attribute vec4 a_color;
 
@@ -27,8 +26,8 @@
             }
         </script>
 
-    <!-- fragment shader -->
-    <script id="fs" type="x-shader/x-fragment">
+        <!-- fragment shader -->
+        <script id="fs" type="x-shader/x-fragment">
             precision mediump float;
 
             // Passed in from the vertex shader.
@@ -39,7 +38,7 @@
             }
         </script>
 
-    <script id="vss" type="x-shader/x-vertex">
+        <script id="vss" type="x-shader/x-vertex">
             attribute vec4 a_position;
             attribute vec3 a_color;
 
@@ -61,7 +60,7 @@
             }
         </script>
 
-    <script id="fss" type="x-shader/x-fragment">
+        <script id="fss" type="x-shader/x-fragment">
             precision mediump float;
 
             varying float shadeFactor;
@@ -71,8 +70,8 @@
                 gl_FragColor = vec4(v_color * (1.0 - shadeFactor),1.0);
             }
         </script>
-    
-    <script id="vst" type="x-shader/x-vertex">
+
+        <script id="vst" type="x-shader/x-vertex">
             attribute vec4 a_position;
             attribute vec3 a_color;
             attribute vec2 a_textcoord;
@@ -93,225 +92,430 @@
             }
         </script>
 
-    <script id="fst" type="x-shader/x-fragment">
+        <script id="fst" type="x-shader/x-fragment">
             precision mediump float;
 
             // Passed in from the vertex shader.
             varying vec2 v_texcoord;
             varying vec4 v_color;
-            
+
             // The texture.
             uniform sampler2D u_texture;
-            
+
             void main() {
                 gl_FragColor = texture2D(u_texture, v_texcoord);
             }
         </script>
 
-    <script src="script.js" type="module" defer></script>
-</head>
+        <script src="script.js" type="module" defer></script>
+    </head>
 
-<body>
-    <canvas id="canvas"></canvas>
-    <form name="model" id="model" action="">
-        <div class="row">
-            <div>
+    <body>
+        <canvas id="canvas"></canvas>
+        <form name="model" id="model" action="">
+            <div class="row">
                 <div>
-                    <h3>KAMERA</h3>
-                    <label for="radius">Radius:</label>
-                    <input type="range" name="radius" min="0.01" max="5.0" step="0.01" value="1.0" id="radius"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1.0</output>
+                    <div>
+                        <h3>KAMERA</h3>
+                        <label for="radius">Radius:</label>
+                        <input
+                            type="range"
+                            name="radius"
+                            min="0.01"
+                            max="5.0"
+                            step="0.01"
+                            value="1.0"
+                            id="radius"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>1.0</output>
 
-                    <br />
-                    <label for="height">Height:</label>
-                    <input type="range" name="height" min="-2.0" max="2.0" step="0.01" value="0.0" id="height"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0.0</output>
+                        <br />
+                        <label for="height">Height:</label>
+                        <input
+                            type="range"
+                            name="height"
+                            min="-2.0"
+                            max="2.0"
+                            step="0.01"
+                            value="0.0"
+                            id="height"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0.0</output>
 
+                        <br />
+                        <label for="rotasiYcam">Rotation:</label>
+                        <input
+                            type="range"
+                            name="rotasiYcam"
+                            min="0"
+                            max="360"
+                            value="0"
+                            id="rotasiYcam"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+                    </div>
                     <br />
-                    <label for="rotasiYcam">Rotation:</label>
-                    <input type="range" name="rotasiYcam" min="0" max="360" value="0" id="rotasiYcam"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
+                    <div>
+                        <h3>JENIS BENTUK</h3>
+                        <label for="bentuk"></label>
+                        <input
+                            id="steve"
+                            type="radio"
+                            name="bentuk"
+                            value="steve"
+                            checked
+                        />Steve
+                        <br />
+                        <input
+                            id="articulated2"
+                            type="radio"
+                            name="bentuk"
+                            value="articulated2"
+                        />Articulated 2
+                        <br />
+                        <input
+                            id="fan"
+                            type="radio"
+                            name="bentuk"
+                            value="fan"
+                        />Fan
+                        <br />
+                        <input
+                            id="sheep"
+                            type="radio"
+                            name="bentuk"
+                            value="sheep"
+                        />Sheep
+                        <br />
+                        <input
+                            id="articulated-custom"
+                            type="radio"
+                            name="bentuk"
+                            value="custom"
+                            disabled
+                        />Model Kustom
+                    </div>
+                    <br />
+                    <div>
+                        <h3>JENIS PROYEKSI</h3>
+                        <label for="proyeksi"></label>
+                        <input
+                            id="projection-orth"
+                            type="radio"
+                            name="proyeksi"
+                            value="orthographic"
+                            checked
+                        />Orthographic
+                        <br />
+                        <input
+                            id="projection-obliq"
+                            type="radio"
+                            name="proyeksi"
+                            value="oblique"
+                        />Oblique
+                        <input
+                            type="range"
+                            name="shearX"
+                            min="0.0"
+                            max="360.0"
+                            step="0.001"
+                            value="116.565"
+                            id="shearX"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output id="valuesx">116.565</output>
+                        <input
+                            type="range"
+                            name="shearY"
+                            min="0.0"
+                            max="360.0"
+                            step="0.001"
+                            value="63.435"
+                            id="shearY"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output id="valuesy">63.435</output>
+                        <br />
+                        <input
+                            id="projection-persp"
+                            type="radio"
+                            name="proyeksi"
+                            value="perspective"
+                        />Perspective
+                        <input
+                            type="range"
+                            name="fieldOfView"
+                            min="1"
+                            max="179"
+                            value="120"
+                            id="fieldOfView"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output id="valuefov">120</output>
+                    </div>
+                    <br />
+                    <div>
+                        <h3>SHADING & ANIMASI</h3>
+                        <input
+                            id="shading"
+                            type="checkbox"
+                            name="shading"
+                            value="shading"
+                        />
+                        <label for="shading">Shading</label>
+                        <input
+                            id="animation"
+                            type="checkbox"
+                            name="animation"
+                            value="animation"
+                        />
+                        <label for="animation"> Animation</label>
+                    </div>
+                    <br />
                 </div>
-                <br />
                 <div>
-                    <h3>JENIS BENTUK</h3>
-                    <label for="bentuk"></label>
-                    <input id="steve" type="radio" name="bentuk" value="steve" checked />Steve
+                    <div>
+                        <h3>ROTASI</h3>
+                        <label for="rotasiX">X:</label>
+                        <input
+                            type="range"
+                            name="rotasiX"
+                            min="0"
+                            max="360"
+                            value="0"
+                            id="rotasiX"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="rotasiY">Y:</label>
+                        <input
+                            type="range"
+                            name="rotasiY"
+                            min="0"
+                            max="360"
+                            value="0"
+                            id="rotasiY"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="rotasiZ">Z:</label>
+                        <input
+                            type="range"
+                            name="rotasiZ"
+                            min="0"
+                            max="360"
+                            value="0"
+                            id="rotasiZ"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="rotasiZcube">Z Cube:</label>
+                        <input
+                            type="range"
+                            name="rotasiZcube"
+                            min="0"
+                            max="360"
+                            value="0"
+                            id="rotasiZcube"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <div id="rotation-for-child"></div>
+                    </div>
                     <br />
-                    <input id="articulated2" type="radio" name="bentuk" value="articulated2" />Articulated 2
+                    <div>
+                        <h3>TRANSLASI</h3>
+                        <label for="translasiX">X:</label>
+                        <input
+                            type="range"
+                            name="translasiX"
+                            min="-100"
+                            max="100"
+                            value="0"
+                            id="translasiX"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="translasiY">Y:</label>
+                        <input
+                            type="range"
+                            name="translasiY"
+                            min="-100"
+                            max="100"
+                            value="0"
+                            id="translasiY"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="translasiYcube">Y Cube:</label>
+                        <input
+                            type="range"
+                            name="translasiYcube"
+                            min="-100"
+                            max="100"
+                            value="0"
+                            id="translasiYcube"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <br />
+                        <label for="translasiZ">Z:</label>
+                        <input
+                            type="range"
+                            name="translasiZ"
+                            min="-1000"
+                            max="1000"
+                            value="0"
+                            id="translasiZ"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>0</output>
+
+                        <div id="translation-for-child"></div>
+                    </div>
                     <br />
-                    <input id="fan" type="radio" name="bentuk" value="fan" />Fan
+                    <div>
+                        <h3>SCALING</h3>
+                        <label for="scalingX">X:</label>
+                        <input
+                            type="range"
+                            name="scalingX"
+                            min="0"
+                            max="2"
+                            value="1"
+                            step="0.1"
+                            id="scalingX"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>1</output>
+
+                        <br />
+                        <label for="scalingXcube">X Cube:</label>
+                        <input
+                            type="range"
+                            name="scalingXcube"
+                            min="0"
+                            max="2"
+                            value="1"
+                            step="0.1"
+                            id="scalingXcube"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>1</output>
+
+                        <br />
+                        <label for="scalingY">Y:</label>
+                        <input
+                            type="range"
+                            name="scalingY"
+                            min="0"
+                            max="2"
+                            value="1"
+                            step="0.1"
+                            id="scalingY"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>1</output>
+
+                        <br />
+                        <label for="scalingZ">Z:</label>
+                        <input
+                            type="range"
+                            name="scalingZ"
+                            min="0"
+                            max="2"
+                            value="1"
+                            step="0.1"
+                            id="scalingZ"
+                            oninput="this.nextElementSibling.value = this.value"
+                        />
+                        <output>1</output>
+
+                        <div id="scale-for-child"></div>
+                    </div>
                     <br />
-                    <input id="sheep" type="radio" name="bentuk" value="sheep" />Sheep
+                    <div>
+                        <input
+                            type="reset"
+                            id="reset"
+                            name="reset"
+                            value="Reset"
+                        />
+                    </div>
                     <br />
-                    <input id="articulated-custom" type="radio" name="bentuk" value="custom" disabled />Model Kustom
                 </div>
-                <br />
                 <div>
-                    <h3>JENIS PROYEKSI</h3>
-                    <label for="proyeksi"></label>
-                    <input id="projection-orth" type="radio" name="proyeksi" value="orthographic" checked />Orthographic
-                    <br />
-                    <input id="projection-obliq" type="radio" name="proyeksi" value="oblique" />Oblique
-                    <input type="range" name="shearX" min="0.0" max="360.0" step="0.001" value="116.565" id="shearX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output id="valuesx">116.565</output>
-                    <input type="range" name="shearY" min="0.0" max="360.0" step="0.001" value="63.435" id="shearY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output id="valuesy">63.435</output>
-                    <br />
-                    <input id="projection-persp" type="radio" name="proyeksi" value="perspective" />Perspective
-                    <input type="range" name="fieldOfView" min="1" max="179" value="120" id="fieldOfView"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output id="valuefov">120</output>
+                    <div>
+                        <h3>LOAD & SAVE</h3>
+                        <input id="load" type="file" name="loadmodel" /> <br /><br />
+                        <button type="button" id="save" name="savemodel">Save</button>
+                    </div>
+                    <div>
+                        <h3>ANIMATION</h3>
+                        <button type="button" id="newanim" name="newanim">New</button> <br /><br />
+                        <input id="loadanim" type="file" name="loadanim" /> <br /><br />
+                        <button type="button" id="saveanim" name="saveanim">Save</button> <br /><br />
+                        <div id="controller" class="hidden">
+                            <p>Duration</p>
+                            <input
+                                type="range"
+                                name="duration"
+                                min="0.1"
+                                max="5"
+                                step="0.1"
+                                value="1"
+                                id="duration"
+                                oninput="this.nextElementSibling.value = this.value"
+                            />
+                            <output>1</output> <br /><br />
+                            <p>Frame</p>
+                            <input
+                                type="range"
+                                name="frame"
+                                min="1"
+                                max="1"
+                                value="1"
+                                id="frame"
+                                oninput="this.nextElementSibling.value = this.value"
+                            />
+                            <output>1</output> <button type="button" id="addframe" name="addframe">+</button> <br /><br />
+                            <button type="button" id="saveframe" name="saveframe">Save Frame</button>
+                            <button type="button" id="deleteframe" name="deleteframe">Delete Frame</button> <br /><br />
+                            <button type="button" id="swapprevframe" name="swapprevframe">Swap Prev</button>
+                            <button type="button" id="swapnextframe" name="swapnextframe">Swap Next</button> <br /><br />
+                            <button type="button" id="prevframe" name="prevframe">Prev Frame</button>
+                            <button type="button" id="nextframe" name="nextframe">Next Frame</button> <br /><br />
+                            <button type="button" id="playanim" name="playanim">Play</button> <button type="button" id="pauseanim" name="pauseanim">Pause</button><br /><br />
+                            <button type="button" id="reverseanim" name="reverseanim">Reverse</button> <button type="button" id="replayanim" name="replayanim">Replay</button><br /><br />
+                            <input
+                                id="loop"
+                                type="checkbox"
+                                name="loop"
+                                value="loop"
+                            />
+                            <label for="loop">Loop</label>
+                        </div>
+                    </div>
                 </div>
-                <br>
-                <div>
-                    <h3>SHADING & ANIMASI</h3>
-                    <input id="shading" type="checkbox" name="shading" value="shading" />
-                    <label for="shading">Shading</label>
-                    <input id="animation" type="checkbox" name="animation" value="animation">
-                    <label for="animation"> Animation</label>
-                </div>
-                <br />
             </div>
-            <div>
-                <div>
-                    <h3>ROTASI</h3>
-                    <label for="rotasiX">X:</label>
-                    <input type="range" name="rotasiX" min="0" max="360" value="0" id="rotasiX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiY">Y:</label>
-                    <input type="range" name="rotasiY" min="0" max="360" value="0" id="rotasiY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiZ">Z:</label>
-                    <input type="range" name="rotasiZ" min="0" max="360" value="0" id="rotasiZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="rotasiZcube">Z Cube:</label>
-                    <input type="range" name="rotasiZcube" min="0" max="360" value="0" id="rotasiZcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <div id="rotation-for-child">
-
-                    </div>
-                </div>
-                <br />
-                <div>
-                    <h3>TRANSLASI</h3>
-                    <label for="translasiX">X:</label>
-                    <input type="range" name="translasiX" min="-100" max="100" value="0" id="translasiX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="translasiY">Y:</label>
-                    <input type="range" name="translasiY" min="-100" max="100" value="0" id="translasiY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="translasiYcube">Y Cube:</label>
-                    <input type="range" name="translasiYcube" min="-100" max="100" value="0" id="translasiYcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <br />
-                    <label for="translasiZ">Z:</label>
-                    <input type="range" name="translasiZ" min="-1000" max="1000" value="0" id="translasiZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>0</output>
-
-                    <div id="translation-for-child">
-
-                    </div>
-                </div>
-                <br />
-                <div>
-                    <h3>SCALING</h3>
-                    <label for="scalingX">X:</label>
-                    <input type="range" name="scalingX" min="0" max="2" value="1" step="0.1" id="scalingX"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <br />
-                    <label for="scalingXcube">X Cube:</label>
-                    <input type="range" name="scalingXcube" min="0" max="2" value="1" step="0.1" id="scalingXcube"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <br />
-                    <label for="scalingY">Y:</label>
-                    <input type="range" name="scalingY" min="0" max="2" value="1" step="0.1" id="scalingY"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <br />
-                    <label for="scalingZ">Z:</label>
-                    <input type="range" name="scalingZ" min="0" max="2" value="1" step="0.1" id="scalingZ"
-                        oninput="this.nextElementSibling.value = this.value" />
-                    <output>1</output>
-
-                    <div id="scale-for-child">
-
-                    </div>
-                </div>
-                <br />
-                <div>
-                    <input type="reset" id="reset" name="reset" value="Reset" />
-                </div>
-                <br />
-            </div>
-        </div>
-    </form>
-    <div>
-        <h3>LOAD & SAVE</h3>
-        <input id="load" type="file" name="loadmodel" /> <br><br>
-        <button id="save" name="savemodel">Save</button>
-    </div>
-    </div>
-    </div>
-    <div id="help">
-        <img src="icons8-info-squared-100.png" alt="help" height="50%" width="50%" />
-    </div>
-    <div id="helpMenu">
-        <h3>Help / Cara Menggunakan</h3>
-        <ul>
-            <li>Lakukan pengaturan <i>radius</i>, <i>height</i>, dan <i>rotation</i> untuk mengatur setelan kamerapada
-                bagian <b>KAMERA</b></li><br>
-            <li>Terdapat 3 model bawaan yang dapat dipilih, yaitu Kubus, Piramid, dan Dodecahedron pada bagian <b>JENIS
-                    BENTUK</b></li>
-            <ul>
-                <li>Anda dapat menggunakan model kustom / hasil penyimpanan dengan memilih file pada bagian <b>LOAD &
-                        SAVE</b></li>
-                <li>Simpan model hasil transformasi dengan klik tombol <i>save</i></li>
-            </ul><br>
-            <li>Terdapat 3 tipe proyeksi yang dapat dipilih, yaitu <i>orthographic</i>, <i>oblique</i>, dan
-                <i>perspective</i> pada bagian <b>JENIS PROYEKSI</b>
-            </li><br>
-            <li>Lakukan tranformasi (translasi, rotasi, skala/scale) pada model dengan mengatur nilai X, Y, dan Z
-                menggunakan slider</li><br>
-            <li>Anda dapat menerapkan <i>shading</i> dan <i>animation</i> dengan mencentang <i>checkbox</i> pada bagian
-                <b>SHADING & ANIMATION</b>
-            </li><br>
-            <li>Gunakan tombol <i>reset</i> untuk mengulang kondisi model menjadi keadaan semula</li><br>
-        </ul>
-    </div>
-    <img id="bump-text" src="./assets/normal.jpg" alt="" hidden>
-    <img id="moon-text" src="./assets/moon.jpg" alt="" hidden>
-    <img id="env-text" src="./assets/enviroment.jpg" alt="" hidden>
-</body>
-
+        </form>
+        <img id="bump-text" src="./assets/normal.jpg" alt="" hidden />
+        <img id="moon-text" src="./assets/moon.jpg" alt="" hidden />
+        <img id="env-text" src="./assets/enviroment.jpg" alt="" hidden />
+    </body>
 </html>
