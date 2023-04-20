@@ -14,6 +14,10 @@ export class Tree {
     createTree(hierarchy, parent){
         // To create a tree consist of nodes
         // Root is in index 0
+        this.addNodeToTree(hierarchy, parent);
+        this.root.updateWorldMatrix();
+    }
+    addNodeToTree(hierarchy, parent){
         let node = new Node(hierarchy)
         if (parent){
             node.setParent(parent);

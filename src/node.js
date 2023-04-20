@@ -13,7 +13,13 @@ export class Node {
         this.localMatrix = identityMatrix();
         this.worldMatrix = identityMatrix();
         this.source = hierarchy.source;
-        this.translation = [0, 0, 0];
+        this.centroid = hierarchy.centroid;
+        this.translation = hierarchy.translation;
+        this.rotation = hierarchy.rotation;
+        this.scale = hierarchy.scale;
+        this.updateWorldMatrix();
+
+        // Reset transformation
         this.rotation = [0, 0, 0];
         this.scale = [1, 1, 1];
     }
@@ -48,16 +54,16 @@ export class Node {
         // To update local matrix based on users preferences
         // Local matrix parameter changed in editor (component slider)
         const nodeTMatVal = translationMatrix(
-            this.translation[0],
-            this.translation[1],
-            this.translation[2]
+            this.centroid[0] - this.translation[0],
+            this.centroid[1] - this.translation[1],
+            this.centroid[2] - this.translation[2]
         ).flat();
         const nodeRMatVal = rotationMatrices(
             this.rotation[0],
             this.rotation[1],
             this.rotation[2]
         );
-
+        console.log(this.scale)
         const nodeSMatVal = scaleMatrix(this.scale[0], this.scale[1], this.scale[2]).flat();
         this.localMatrix = matrixMultiplication(nodeSMatVal, this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeRMatVal[2], this.localMatrix);
