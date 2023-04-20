@@ -793,13 +793,14 @@ function main() {
         var image = document.getElementById("env-text");
         configureTexture(image);
         gl.activeTexture(gl.TEXTURE0);
+        
         drawObjects(tree.root)
     }
     function animrender() {
         render()
         animFrameId = window.requestAnimationFrame(animrender);
     }
-    async function configureTexture( image ) {
+    function configureTexture( image ) {
         var texture = gl.createTexture();
         gl.bindTexture( gl.TEXTURE_2D, texture );
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
