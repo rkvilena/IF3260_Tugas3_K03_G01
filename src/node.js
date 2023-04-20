@@ -63,7 +63,6 @@ export class Node {
             this.rotation[1],
             this.rotation[2]
         );
-        console.log(this.scale)
         const nodeSMatVal = scaleMatrix(this.scale[0], this.scale[1], this.scale[2]).flat();
         this.localMatrix = matrixMultiplication(nodeSMatVal, this.localMatrix);
         this.localMatrix = matrixMultiplication(nodeRMatVal[2], this.localMatrix);
