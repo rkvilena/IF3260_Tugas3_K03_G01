@@ -17,6 +17,8 @@ export function save(tree, translation, rotation, scale) {
 
 function saveNodeToHierarchy(node) {
     let hierarchynode = {
+        asset: node.asset,
+        pixelated: true,
         name: node.name,
         source: saveComponent(node.source, node.worldMatrix),
         pivot: node.pivot

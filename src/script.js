@@ -339,7 +339,7 @@ function main() {
                 // Load Texture
                 var image = new Image();
                 image.src = "./assets/" + renderedmodel.asset;
-                console.log(image.src);;
+                console.log(image.src);
                 image.onload = function () {
                     configureTexture(image, renderedmodel.pixelated);
                     gl.activeTexture(gl.TEXTURE0);
@@ -475,6 +475,13 @@ function main() {
             document.getElementById("valuefov").hidden = true;
             window.cancelAnimationFrame(animFrameId);
             renderedmodel = steve;
+            var image = new Image();
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
+                image.onload = function () {
+                    configureTexture(image, renderedmodel.pixelated);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
             tree = new Tree();
             tree.createTree(renderedmodel);
             uiController();
@@ -518,6 +525,13 @@ function main() {
         reader.onload = null;
         reader.addEventListener("load", function (event) {
             renderedmodel = JSON.parse(event.target.result);
+            var image = new Image();
+                image.src = "./assets/" + renderedmodel.asset;
+                console.log(image.src);
+                image.onload = function () {
+                    configureTexture(image, renderedmodel.pixelated);
+                    gl.activeTexture(gl.TEXTURE0);
+                };
             tree = null;
             tree = new Tree();
             tree.createTree(renderedmodel)
