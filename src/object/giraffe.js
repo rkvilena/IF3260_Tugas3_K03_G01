@@ -346,7 +346,7 @@ export const head = {
     }
 };
 
-export const rightarm = {
+export const frontLegRight = {
     vertices: [
         0.45, -0.9063636022845906, 0.2,
         0.3, -0.9063636022845906, 0.2,
@@ -462,7 +462,7 @@ export const rightarm = {
     }
 };
 
-export const leftarm = {
+export const frontLegLeft = {
     vertices: [
         -0.3, -0.9063636022845906, 0.2,
         -0.45, -0.9063636022845906, 0.2,
@@ -838,19 +838,19 @@ export const giraffe = {
             ],
         },
         {
-            name: "rightarm",
-            source: rightarm,
+            name: "frontLegRight",
+            source: frontLegRight,
             pivot: [
-                rightarm.centroid[0],
+                frontLegRight.centroid[0],
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
                 0,
             ],
         },
         {
-            name: "leftarm",
-            source: leftarm,
+            name: "frontLegLeft",
+            source: frontLegLeft,
             pivot: [
-                leftarm.centroid[0],
+                frontLegLeft.centroid[0],
                 (body.centroid[1] + body.dimensions[1] / 2) * 0.76,
                 0,
             ],
