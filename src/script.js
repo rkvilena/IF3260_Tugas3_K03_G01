@@ -13,16 +13,16 @@ import {
 } from "./math.js";
 import { hierarchy1 } from "./object/articulated.js"
 import { steve } from "./object/steve.js";
-import { sheep } from "./object/sheep.js";
+import { giraffe } from "./object/giraffe.js";
 import { fan } from "./object/fan.js";
+import { sheep } from "./object/sheep.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
-import { giraffe } from "./object/giraffe.js";
 
 ("use strict");
 
 // Hardcoded values----------------------------------------------
-let renderedmodel = giraffe;
+let renderedmodel = steve;
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];
@@ -299,9 +299,9 @@ function main() {
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("articulated2")
+            .getElementById("giraffe")
             .addEventListener("click", function (event) {
-                renderedmodel = hierarchy1;
+                renderedmodel = giraffe;
                 // Load Texture
                 var image = new Image();
                 image.src = "./assets/" + renderedmodel.asset;
