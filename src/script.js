@@ -11,13 +11,12 @@ import {
     rotationMatrices,
     identityMatrix
 } from "./math.js";
-import { cube, dodecahedron, pyramid } from "./object/models.js";
-import { hierarchy1, hierarchy2 } from "./object/articulated.js";
+import { hierarchy1 } from "./object/articulated.js"
 import { steve } from "./object/steve.js";
+import { sheep } from "./object/sheep.js";
 import { fan } from "./object/fan.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
-import { sheep } from "./object/sheep.js";
 
 
 ("use strict");
@@ -277,16 +276,16 @@ function main() {
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("articulated3")
+            .getElementById("fan")
             .addEventListener("click", function (event) {
-                renderedmodel = hierarchy2;
+                renderedmodel = fan;
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();
                 window.requestAnimationFrame(render);
             });
         document
-            .getElementById("articulated4")
+            .getElementById("sheep")
             .addEventListener("click", function (event) {
                 renderedmodel = sheep;
                 tree = new Tree();
