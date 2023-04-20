@@ -5,6 +5,7 @@
 2. Buka file index.html
 3. Install extension Live Server (apabila belum)
 4. Klik ```Go Live``` di sekitar pojok kanan bawah VS Code
+5. Apabila tampilan yang muncul adalah folder-folder, klik `src`
 * Menggunakan Python
 1. Buka terminal di folder project
 2. Masukkan `python -m http.server`
