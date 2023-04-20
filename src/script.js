@@ -582,7 +582,10 @@ function main() {
         readerAnim.onload = null;
         readerAnim.addEventListener("load", function (event) {
             animation = JSON.parse(event.target.result);
-            if (animation.for != renderedmodel.class) {
+            if (!animation.for) {
+                alert("Not an Animation!");
+                return;
+            } else if (animation.for != renderedmodel.class) {
                 if (modelmap.get(animation.for)) {
                     document.getElementById(renderedmodel.class).checked = false;
                     renderedmodel = modelmap.get(animation.for);
@@ -605,14 +608,15 @@ function main() {
                     alert("There is no model that fits this animation!");
                     return;
                 }
-            }
-            document.getElementById("controller").classList.remove("hidden");
-            document.getElementById("frame").max = animation.frames.length;
-            document.getElementById("duration").value = parseFloat(animation.duration);
-            document.getElementById("duration").nextElementSibling.value = parseFloat(animation.duration);
-            tree.applyAnimation(animation.frames[0]);
-            tree.root.updateWorldMatrix();
-            window.requestAnimationFrame(render);
+            } else {
+                document.getElementById("controller").classList.remove("hidden");
+                document.getElementById("frame").max = animation.frames.length;
+                document.getElementById("duration").value = parseFloat(animation.duration);
+                document.getElementById("duration").nextElementSibling.value = parseFloat(animation.duration);
+                tree.applyAnimation(animation.frames[0]);
+                tree.root.updateWorldMatrix();
+                window.requestAnimationFrame(render);
+            } 
         });
     }
 
