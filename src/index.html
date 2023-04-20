@@ -154,7 +154,7 @@
                     <br />
                     <input id="sheep" type="radio" name="bentuk" value="sheep" />Sheep
                     <br />
-                    <input id="articulated-custom" type="radio" name="bentuk" value="custom" />Model Kustom
+                    <input id="articulated-custom" type="radio" name="bentuk" value="custom" disabled/>Model Kustom
                 </div>
                 <br />
                 <div>
@@ -166,9 +166,9 @@
                     <input type="range" name="shearX" min="0.0" max="360.0" step="0.001" value="116.565" id="shearX"
                         oninput="this.nextElementSibling.value = this.value" />
                     <output id="valuesx">116.565</output>
-                    <input type="range" name="shearY" min="0.0" max="360.0" step="0.001" value="63.435" id="shearY"
+                    <input type="range" name="shearY" min="0.0" max="360.0" step="0.001" value="116.565" id="shearY"
                         oninput="this.nextElementSibling.value = this.value" />
-                    <output id="valuesy">63.435</output>
+                    <output id="valuesy">116.565</output>
                     <br />
                     <input id="projection-persp" type="radio" name="proyeksi" value="perspective" />Perspective
                     <input type="range" name="fieldOfView" min="1" max="179" value="120" id="fieldOfView"
@@ -177,11 +177,9 @@
                 </div>
                 <br />
                 <div>
-                    <h3>SHADING & ANIMASI</h3>
+                    <h3>SHADING</h3>
                     <input id="shading" type="checkbox" name="shading" value="shading" />
                     <label for="shading">Shading</label>
-                    <input id="animation" type="checkbox" name="animation" value="animation">
-                    <label for="animation"> Animation</label>
                 </div>
                 <br />
             </div>
@@ -310,7 +308,7 @@
         <ul>
             <li>Lakukan pengaturan <i>radius</i>, <i>height</i>, dan <i>rotation</i> untuk mengatur setelan kamerapada
                 bagian <b>KAMERA</b></li><br>
-            <li>Terdapat 3 model bawaan yang dapat dipilih, yaitu Kubus, Piramid, dan Dodecahedron pada bagian <b>JENIS
+            <li>Terdapat 4 model bawaan yang dapat dipilih, yaitu Steve, Giraffe, Fan, dan Sheep pada bagian <b>JENIS
                     BENTUK</b></li>
             <ul>
                 <li>Anda dapat menggunakan model kustom / hasil penyimpanan dengan memilih file pada bagian <b>LOAD &
@@ -322,10 +320,13 @@
             </li><br>
             <li>Lakukan tranformasi (translasi, rotasi, skala/scale) pada model dengan mengatur nilai X, Y, dan Z
                 menggunakan slider</li><br>
-            <li>Anda dapat menerapkan <i>shading</i> dan <i>animation</i> dengan mencentang <i>checkbox</i> pada bagian
-                <b>SHADING & ANIMATION</b>
+            <li>Anda dapat menerapkan <i>shading</i> dengan mencentang <i>checkbox</i> pada bagian
+                <b>SHADING</b>
             </li><br>
             <li>Gunakan tombol <i>reset</i> untuk mengulang kondisi model menjadi keadaan semula</li><br>
+            <li>Terdapat fitur untuk memproses <i>animasi</i> yang terdapat di bagian kanan halaman. Fitur dapat melakukan new animation, 
+                add frame, save frame, delete frame, swap frame, prev/next frame, Play Pause, Reverse Replay dan loop. Lakukan load untuk
+                loading animation. Jika ada class yang sesuai akan diarahkan ke class tersebut, jika tidak maka akan error.</li><br>
         </ul>
     </div>
     <img id="bump-text" src="./assets/normal.jpg" alt="" hidden>
