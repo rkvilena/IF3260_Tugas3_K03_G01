@@ -12,15 +12,14 @@ import {
     identityMatrix
 } from "./math.js";
 import { cube, dodecahedron, pyramid } from "./object/models.js";
-import { hierarchy1, hierarchy2 } from "./object/articulated.js";
+import { hierarchy1, hierarchy2, threebox } from "./object/articulated.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
-
 
 ("use strict");
 
 // Hardcoded values----------------------------------------------
-let renderedmodel = hierarchy1;
+let renderedmodel = threebox;
 let rotation = [0, 0, 0];
 let translation = [0, 0, 0];
 let scale = [1, 1, 1];

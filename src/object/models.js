@@ -840,4 +840,75 @@ export const dodecahedron = {
     },
 }
 
-
+export const solidcube = {
+    vertices : [
+        -0.5, -0.5, -0.5, // 0
+        0.5, -0.5, -0.5, // 1
+        0.5, 0.5, -0.5, // 2
+        -0.5, 0.5, -0.5, // 3
+        -0.5, -0.5, 0.5, // 4
+        0.5, -0.5, 0.5, // 5
+        0.5, 0.5, 0.5, // 6
+        -0.5, 0.5, 0.5, //7
+    ],   
+    indices: [
+               // Front Face
+        // Front
+        0, 1, 2,
+        0, 2, 3,
+        // Back
+        4, 7, 6,
+        4, 6, 5,
+        // Left
+        0, 3, 7,
+        0, 7, 4,
+        // Rigth
+        1, 5, 6,
+        1, 6, 2,
+        // Top
+        3, 2, 6,
+        3, 6, 7,
+        // Down
+        0, 4, 5,
+        0, 5, 1,
+    ],
+    colors : [
+        [200, 70, 120],
+        [80, 70, 200],
+        [70, 200, 210],
+        [200, 200, 70],
+        [210, 100, 70],
+        [70, 180, 210],
+        [100, 70, 210],
+        [76, 210, 100],
+    ],
+    get colorarray() {
+        var colorarray = [];
+        for (var i = 0; i < this.indices.length; i++) {
+            colorarray.push(this.colors[Math.floor(i / 6) % 8]);
+        }
+        return colorarray.flat();
+    },
+    get centroid() {
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += this.vertices[this.indices[i] * 3];
+            cent[1] += this.vertices[this.indices[i] * 3 + 1];
+            cent[2] += this.vertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
+    },
+    get positions() {
+        const cent = this.centroid;
+        var positions = [];
+        for (var i = 0; i < this.indices.length; i++) {
+            positions.push(this.vertices[this.indices[i] * 3] - cent[0]);
+            positions.push(this.vertices[this.indices[i] * 3 + 1] - cent[0]);
+            positions.push(this.vertices[this.indices[i] * 3 + 2] - cent[0]);
+        }
+        return positions
+    },
+}
