@@ -141,6 +141,7 @@ function main() {
             rotateSlider.max = 360;
             rotateSlider.value = 0;
             rotateSlider.oninput = function () {
+                console.log("Hello World");
                 this.nextElementSibling.value = this.value;
                 tree.findNode(childName).rotation[j] = parseFloat(this.value)
                 tree.root.updateWorldMatrix()
@@ -286,7 +287,7 @@ function main() {
         document
             .getElementById("articulated4")
             .addEventListener("click", function (event) {
-                renderedmodel = hierarchy3;
+                renderedmodel = sheep;
                 tree = new Tree();
                 tree.createTree(renderedmodel);
                 uiController();

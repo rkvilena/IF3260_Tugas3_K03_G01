@@ -154,7 +154,7 @@ const body = {
     }
   }
 
-  const frontRight = {
+  const frontLeft = {
     indices : [
       8, 9, 11,
       11, 10, 8,
@@ -183,7 +183,7 @@ const body = {
       
     ],
     colors: [
-      [200, 70, 120],
+      [10, 150, 110],
     ],
     get colorarray() {
       var colorarray = [];
@@ -232,7 +232,7 @@ const body = {
     }
   }
 
-  const frontLeft = {
+  const frontRight = {
     indices : [
       16, 17, 19,
   19, 18, 16,
@@ -260,84 +260,7 @@ const body = {
   49, 53, 55,
     ],
     colors: [
-      [200, 70, 120],
-    ],
-    get colorarray() {
-      var colorarray = [];
-      for (var i = 0; i < this.indices.length; i++) {
-          colorarray.push(this.colors[0]);
-      }
-      return colorarray.flat();
-    },
-    get centroid() {
-        var cent = [0, 0, 0];
-        for (var i = 0; i < this.indices.length; i++) {
-            cent[0] += allvertices[this.indices[i] * 3];
-            cent[1] += allvertices[this.indices[i] * 3 + 1];
-            cent[2] += allvertices[this.indices[i] * 3 + 2];
-        }
-        cent[0] /= this.indices.length;
-        cent[1] /= this.indices.length;
-        cent[2] /= this.indices.length;
-        return cent;
-    },
-    get positions() {
-        var positions = [];
-        for (var i = 0; i < this.indices.length; i++) {
-            positions.push(allvertices[this.indices[i] * 3]);
-            positions.push(allvertices[this.indices[i] * 3 + 1]);
-            positions.push(allvertices[this.indices[i] * 3 + 2]);
-        }
-        return positions;
-    },
-    get dimensions() {
-        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
-        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
-        for (var i = 1; i < this.indices.length; i++) {
-            max = [
-                Math.max(max[0], allvertices[this.indices[i] * 3]),
-                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
-                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
-            ];
-            min = [
-                Math.min(min[0], allvertices[this.indices[i] * 3]),
-                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
-                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
-            ];
-        }
-        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
-    }
-  }
-
-  const rightBack = {
-    indices : [
-      24, 25, 27,
-  27, 26, 24,
-  26, 27, 31,
-  31, 30, 26,
-  30, 31, 29,
-  29, 28, 30,
-  28, 29, 25,
-  25, 24, 28,
-  26, 30, 28,
-  28, 24, 26,
-  31, 27, 25,
-  25, 29, 31,
-  64, 65, 67,
-  67, 66, 64,
-  66, 67, 71,
-  71, 70, 66,
-  70, 71, 69,
-  69, 68, 70,
-  68, 69, 65,
-  65, 64, 68,
-  66, 70, 68,
-  68, 64, 66,
-  71, 67, 65,
-  65, 69, 71,
-    ],
-    colors: [
-      [200, 70, 120],
+      [150, 50, 200],
     ],
     get colorarray() {
       var colorarray = [];
@@ -388,6 +311,83 @@ const body = {
 
   const leftBack = {
     indices : [
+      24, 25, 27,
+  27, 26, 24,
+  26, 27, 31,
+  31, 30, 26,
+  30, 31, 29,
+  29, 28, 30,
+  28, 29, 25,
+  25, 24, 28,
+  26, 30, 28,
+  28, 24, 26,
+  31, 27, 25,
+  25, 29, 31,
+  64, 65, 67,
+  67, 66, 64,
+  66, 67, 71,
+  71, 70, 66,
+  70, 71, 69,
+  69, 68, 70,
+  68, 69, 65,
+  65, 64, 68,
+  66, 70, 68,
+  68, 64, 66,
+  71, 67, 65,
+  65, 69, 71,
+    ],
+    colors: [
+      [50, 200, 120],
+    ],
+    get colorarray() {
+      var colorarray = [];
+      for (var i = 0; i < this.indices.length; i++) {
+          colorarray.push(this.colors[0]);
+      }
+      return colorarray.flat();
+    },
+    get centroid() {
+        var cent = [0, 0, 0];
+        for (var i = 0; i < this.indices.length; i++) {
+            cent[0] += allvertices[this.indices[i] * 3];
+            cent[1] += allvertices[this.indices[i] * 3 + 1];
+            cent[2] += allvertices[this.indices[i] * 3 + 2];
+        }
+        cent[0] /= this.indices.length;
+        cent[1] /= this.indices.length;
+        cent[2] /= this.indices.length;
+        return cent;
+    },
+    get positions() {
+        var positions = [];
+        for (var i = 0; i < this.indices.length; i++) {
+            positions.push(allvertices[this.indices[i] * 3]);
+            positions.push(allvertices[this.indices[i] * 3 + 1]);
+            positions.push(allvertices[this.indices[i] * 3 + 2]);
+        }
+        return positions;
+    },
+    get dimensions() {
+        var max = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        var min = [allvertices[this.indices[0] * 3], allvertices[this.indices[0] * 3 + 1], allvertices[this.indices[0] * 3 + 2]];
+        for (var i = 1; i < this.indices.length; i++) {
+            max = [
+                Math.max(max[0], allvertices[this.indices[i] * 3]),
+                Math.max(max[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.max(max[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+            min = [
+                Math.min(min[0], allvertices[this.indices[i] * 3]),
+                Math.min(min[1], allvertices[this.indices[i] * 3 + 1]),
+                Math.min(min[2], allvertices[this.indices[i] * 3 + 2])
+            ];
+        }
+        return [max[0] - min[0], max[1] - min[1], max[2] - min[2]];
+    }
+  }
+
+  const rightBack = {
+    indices : [
       32, 33, 35,
   35, 34, 32,
   34, 35, 39,
@@ -414,7 +414,7 @@ const body = {
   41, 45, 47,
     ],
     colors: [
-      [200, 70, 120],
+      [255, 75, 100],
     ],
     get colorarray() {
       var colorarray = [];
@@ -479,7 +479,7 @@ const body = {
   73, 77, 79,
     ],
     colors: [
-      [200, 70, 120],
+      [255, 255, 255],
     ],
     get colorarray() {
       var colorarray = [];
@@ -595,6 +595,7 @@ const body = {
 
 
 export const sheep = {
+  calss : "sheep",
   name: "body",
   source: body,
   pivot: body.centroid,
@@ -602,54 +603,54 @@ export const sheep = {
     {
       name : "face",
       source : face,
-      piviot : [
-        0,
-        body.centroid[1] + body.dimensions[1] / 2,
+      pivot : [
+        (body.centroid[0] - body.dimensions[0] /2 ),
+        (body.centroid[1] - body.dimensions[1] / 2)* 0.75,
         0,
       ]
     },
     {
       name : "frontRight",
       source : frontRight,
-      piviot : [
-        0,
+      pivot : [
+        body.centroid[0] - body.dimensions[0] / 4,
         body.centroid[1] + body.dimensions[1] / 2,
-        0,
+        body.centroid[2] + body.dimensions[2] / 2,
       ]
     },
     {
       name : "frontLeft",
       source : frontLeft,
-      piviot : [
-        0,
+      pivot : [
+        body.centroid[0] - body.dimensions[0] / 4,
         body.centroid[1] + body.dimensions[1] / 2,
-        0,
+        body.centroid[2] - body.dimensions[2] / 2,
       ]
     },
     {
       name : "rightBack",
       source : rightBack,
-      piviot : [
-        0,
-        body.centroid[1] + body.dimensions[1] / 2,
-        0,
+      pivot : [
+        body.centroid[0] + body.dimensions[0] / 4,
+        body.centroid[1] - body.dimensions[1] / 7,
+        body.centroid[2] + body.dimensions[2] / 2,
       ]
     },
     {
       name : "leftBack",
       source : leftBack,
-      piviot : [
-        0,
-        body.centroid[1] + body.dimensions[1] / 2,
-        0,
+      pivot : [
+        body.centroid[0] + body.dimensions[0] / 4,
+        body.centroid[1] - body.dimensions[1] / 7,
+        body.centroid[2] - body.dimensions[2] / 2,
       ]
     },
     {
       name : "tail",
       source : tail,
-      piviot : [
-        0,
-        body.centroid[1] + body.dimensions[1] / 2,
+      pivot : [
+        (body.centroid[0] + body.dimensions[0] /2 ),
+        (body.centroid[1] - body.dimensions[1] / 2) * 0.8,
         0,
       ]
     }
