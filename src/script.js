@@ -14,6 +14,7 @@ import {
 import { cube, dodecahedron, pyramid } from "./object/models.js";
 import { hierarchy1, hierarchy2 } from "./object/articulated.js";
 import { steve } from "./object/steve.js";
+import { fan } from "./object/fan.js";
 import { save } from "./save.js";
 import { Tree } from "./tree.js"
 import { sheep } from "./object/sheep.js";
